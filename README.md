@@ -285,7 +285,7 @@ Details: [PRIVACY.md](PRIVACY.md) · [SECURITY.md](SECURITY.md)
 
 | You see | What to do |
 |---|---|
-| 🔴 *"Couldn't sign you in — this browser or app may not be secure"* | That's Google. Log in to Shaadi with **mobile + OTP** or **email + password** |
+| 🔴 *"Couldn't sign you in — this browser or app may not be secure"* | That's Google. Log in to matrimony website with **mobile + OTP** or **email + password** |
 | 🟡 *"The site logged you out after 7 profiles"* | Log in again and say **"carry on"** — nothing read is lost |
 | 🟡 *"10 is the most per run unless you ask for more"* | Say **"read 20 this time"** (up to 50) |
 | 🟡 It's slow | On purpose — careful, person-like reading. Start it and come back later |
@@ -302,7 +302,7 @@ Details: [PRIVACY.md](PRIVACY.md) · [SECURITY.md](SECURITY.md)
 skills/matrimony_match_scout/
 ├── SKILL.md         what Muse follows, step by step
 ├── START-HERE.md    plain-words guide for the person
-├── references/      intake, login, site playbooks (Shaadi, generic), extraction schema,
+├── references/      intake, login, site playbooks (matrimony.com, generic), extraction schema,
 │                    scoring rubric, file reading, call notes, memory, conversation map
 ├── scripts/         scout.py (the actions Muse calls), state_store, score, extract,
 │                    pipeline, build_report (Excel + report), timing, file_intake
