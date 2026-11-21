@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.3.4 — 2026-11-20
+- Excel is the main deliverable: every report attaches the Excel sheet first
+  (`report` returns `excel`), with the full report alongside
+- WhatsApp: after each report Muse asks "Want me to send this to WhatsApp?";
+  if WhatsApp is not connected it prompts the person to connect it; it asks who
+  to send to, shows the exact message (`whatsapp_text`, top 3 + "full list in
+  the attached Excel sheet") and the attachment, and sends only after a yes
+- README rewritten: detailed and colour-coded (badges, coloured callouts,
+  colour-coded flow diagrams, 🟢🟡🔴 tables) covering install, first run,
+  timing, delivery, WhatsApp, scoring, memory, phrases, privacy, fixes
+- The chat message is now a three-part summary - Summary, Match your
+  interests (score 60+, no red flag), Need your attention (waiting for your
+  reply, red flags, contradictions, changed profiles, things to check) - while
+  the attached files stay comprehensive: the Excel sheet gains a "Needs
+  attention" column, the full report gains Summary / Matches / Needs-attention
+  sections before every profile in detail; WhatsApp message follows the same shape
+- PRIVACY.md and START-HERE describe the WhatsApp step
+- 63 tests
+
 ## 0.3.3 — 2026-11-20
 - Reports are delivered in the Muse chat: top 3 as the message, the Excel sheet
   and full report attached (pasted in the chat if attaching is not possible);

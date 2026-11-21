@@ -33,7 +33,7 @@ class InternalActionTests(unittest.TestCase):
         self.assertEqual([Path(p).suffix for p in prev["attach"]], [".xlsx", ".md"])
         self.assertTrue(all(Path(p).exists() for p in prev["attach"]))
         self.assertIn("do not forward", prev["share_text"])
-        self.assertIn("Here is your match", prev["share_text"])
+        self.assertIn("MATCH YOUR INTERESTS", prev["share_text"])
         self.assertIn("Shared values", Path(prev["markdown"]).read_text())
         self.assertEqual(act(d, "report")["status"], "ok")  # preview did not mark as shown
         self.assertEqual(act(d, "report")["status"], "nothing_new")
@@ -67,7 +67,7 @@ class InternalActionTests(unittest.TestCase):
         self.assertEqual(act(d, "scan-progress")["left"], 2)
         self.assertIn("Done - I read 1", act(d, "scan-end")["say"])
         self.assertNotIn("progress", act(d, "ingest", str(d / "p.json")))  # no scan running
-        self.assertIn("Here are your", act(d, "demo")["digest"])
+        self.assertIn("MATCH YOUR INTERESTS", act(d, "demo")["digest"])
         self.assertEqual(act(d, "scan-start")["cap"], 5)                       # default
         self.assertEqual(act(d, "scan-start", "--cap", "30")["cap"], 10)       # not asked
         self.assertEqual(act(d, "scan-start", "--cap", "30", "--user-asked")["cap"], 30)

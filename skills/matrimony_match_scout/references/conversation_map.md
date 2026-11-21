@@ -26,8 +26,9 @@ never JSON, file paths or tool names unless they ask.
 | "forget Asha" | Confirm, then `forget <id>` |
 | "draft a reply to Asha" | Draft only; send only after they approve the exact text |
 | "read my files" + attachments | `read-files` / vision for screenshots, then `ingest` |
-| "send the report to my mom", "share with family" | Draft a note from `share_text`; send only after they approve the text and recipient — or they forward the attached files |
-| "delete all my data", "start fresh" | Confirm (cannot be undone), then `delete-all --confirm` |
+| "give me the Excel", "excel sheet" | Attach the Excel sheet from the last `report` (run `report` if there is nothing new to show, and say so) |
+| "send it to WhatsApp", "send to my mom", "share with family" | WhatsApp flow in SKILL.md: connect if needed → who to → show exact `whatsapp_text` + Excel → send only after yes |
+| "delete all my scout data", "delete all my data", "start fresh" | Confirm (cannot be undone), then `delete-all --confirm` |
 | "show me a demo" | `demo` (fictional profiles) — show its `digest` |
 | "stop" | Save the checkpoint, say where it stopped, offer to carry on later |
 

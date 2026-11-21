@@ -1,87 +1,319 @@
-# Matrimony Match Scout — a skill for Muse
+# 💍 Matrimony Match Scout — a skill for Muse
 
-![version](https://img.shields.io/badge/version-v0.3.3-blue)
-![works in](https://img.shields.io/badge/works%20in-Muse-7A2E4D)
-![tests](https://img.shields.io/badge/tests-61%20passing-brightgreen)
-![privacy](https://img.shields.io/badge/data-private%20to%20you-purple)
-![license](https://img.shields.io/badge/license-All%20Rights%20Reserved-red)
+![version](https://img.shields.io/badge/version-v0.3.4-1f6feb?style=for-the-badge)
+![works in](https://img.shields.io/badge/works%20in-Muse-7A2E4D?style=for-the-badge)
+![tests](https://img.shields.io/badge/tests-63%20passing-2ea043?style=for-the-badge)
+![privacy](https://img.shields.io/badge/data-private%20to%20you-8250df?style=for-the-badge)
+![license](https://img.shields.io/badge/license-All%20Rights%20Reserved-cf222e?style=for-the-badge)
 
 > **Too many matrimony profiles and chats to check one by one?**
-> Ask Muse to run the Scout. It reads your own account, ranks the best
-> matches against what *you* said you want, and next time shows you
-> **only what's new**.
+> Ask Muse to run the Scout. It reads **your own** matrimony account (for example
+> Shaadi.com), compares every profile with what **you** said you want, and gives
+> you a short ranked shortlist with a reason for each match — plus an
+> **Excel sheet** you can send to family on **WhatsApp**.
+> Next time, it shows you **only what's new**.
 
 > [!TIP]
-> **New here?** Read [START-HERE](skills/matrimony_match_scout/START-HERE.md) first — 2 minutes, plain words.
+> 🟢 **New here?** Read [START-HERE](skills/matrimony_match_scout/START-HERE.md) first — 2 minutes, plain words, with a zero-risk demo on made-up profiles.
 
-## ✨ What you get
+---
 
-- 🎯 **Your top 3 first**, in plain English — why each fits, what's risky or unknown
-- 📊 **A report + Excel sheet**, attached right in the chat (Ranked Matches / Profile Details / Updated Since Last Report) — forward it to family in one tap
-- 🧠 **Memory** — a profile is never shown twice; it returns only if it changed, marked *Updated*
-- ✏️ **Change your mind any time** — "change my age range to 26 to 30" re-scores everything without browsing again
-- 🛡️ **Read-only** — Muse never sends, accepts or rejects anything without your OK
+## 📑 Contents
 
-## 🚀 Install in Muse (2 minutes)
+| | Section | What it tells you |
+|---|---|---|
+| 🟣 | [What you get](#-what-you-get) | The shortlist, the Excel sheet, WhatsApp, memory |
+| 🔵 | [Install](#-install-in-muse-2-minutes) | Three steps in Muse |
+| 🟢 | [Your first run](#-your-first-run--start-it-then-walk-away) | What to do, and when you can walk away |
+| 🟡 | [How long it takes](#-how-long-it-takes) | Profiles per run and minutes |
+| 🟠 | [How your results arrive](#-how-your-results-arrive) | Chat, Excel, WhatsApp |
+| 🔴 | [How matches are scored](#-how-matches-are-scored) | Dealbreakers, points, red flags, unknowns |
+| 🟤 | [Memory](#-memory--never-the-same-profile-twice) | Why you never see anyone twice |
+| ⚪ | [Things you can say](#-things-you-can-say) | Plain-English requests |
+| 🛡️ | [Privacy & safety](#-privacy--safety) | What it never does |
+| ❓ | [Questions & fixes](#-questions--fixes) | Google sign-in, logouts, slow runs |
+| 🧑‍💻 | [For developers](#-for-developers) | Layout, tests, releases |
 
-1. Download the [skill zip](releases/matrimony_match_scout-muse-v0.3.3.zip)
-2. Open Muse, start a chat, **attach the zip**, and say **"Install this skill for me"**
-3. Start a **new** chat and say **"Run matrimony scout"**
+---
 
-## ⏳ Start it, then walk away
+## 🟣 What you get
 
-Muse reads your profiles the way a careful person would — one at a time,
-opening each page and reading it. **That takes a while: about 30–60 seconds
-per profile.** So each run reads **5 profiles by default (about 5–10 minutes)**
-and **at most 10 (about 8–15 minutes)** — say "read 20 this time" if you want
-more. Muse tells you the estimate before it starts and the time left as it goes.
+| | You get | In plain words |
+|---|---|---|
+| 📝 | **A short summary in the chat** | Three parts: 🔵 **Summary** (how many, new / updated / left out) · 🟢 **Match your interests** (the best 3, with *why it fits* and *what is risky*) · 🟠 **Need your attention** (waiting for your reply, red flags, changed profiles, things to check) |
+| 📊 | **An Excel sheet** — attached every time | The comprehensive version: three tabs, **Ranked Matches** (with a *Needs attention* column), **Profile Details**, **Updated Since Last Report** (before → now) |
+| 📄 | **A full report** — attached | Summary, matches, needs-attention table, ranked list, and every profile in detail |
+| 💬 | **WhatsApp, if you want** | Muse asks *"Want me to send this to WhatsApp?"* and sends the shortlist + Excel sheet only after you approve |
+| 🧠 | **Memory** | Nobody is shown twice. A profile returns only if it changed — marked **Updated** with what changed |
+| ✏️ | **Change your mind any time** | *"change my age range to 26 to 30"* re-scores everyone already read — no browsing again |
+| 🛡️ | **Read-only** | Muse never sends, accepts, declines or shortlists anything on the site without your OK |
 
-You don't need to sit and watch:
+Example of what Muse shows you (made-up people):
 
-1. Say **"Run matrimony scout"** and answer **5 quick questions**.
-2. When the browser opens, **log in to your matrimony site yourself**.
-   (Use mobile number + OTP or email + password — Google blocks
-   "Sign in with Google" in assistant-controlled browsers.)
-3. Check the **one sample profile** Muse shows you and say "yes" (or correct it).
-4. Say **"Go ahead and run the scout"** — then **leave, or close the app**.
-5. **Come back later.** Your top 3 will be waiting in the chat, with the report and
-   the Excel sheet attached.
+```text
+Done — I read 10 profiles in 9 minutes.
+
+Summary: 8 profile(s) in this report - 7 new, 1 updated; 2 left out by your
+must-haves or dealbreakers. 3 match your interests well, 3 need your attention.
+
+MATCH YOUR INTERESTS (top 3):
+1. Asha, 27, Seattle - Software Engineer. Score 90/100 (confidence high).
+   Why it fits: Lives in Seattle, one of your places; Education (MS) meets your minimum
+   Risky or unknown: nothing spotted
+2. Priya, 28, Bellevue - Data Analyst. Score 85/100 (confidence high).
+3. Divya, 29, San Jose - Product Manager. Score 75/100 (confidence high).
+
+NEED YOUR ATTENTION (3):
+- Asha: waiting for your reply (asked about a phone or video call)
+- Meera: changed since you last saw it - profession: Analyst -> Manager
+- Sneha: red flag - asks for money
+
+The attached Excel sheet and full report have every profile in detail.
+📎 report.xlsx   📎 report.md
+Want me to send this to WhatsApp?
+```
 
 > [!NOTE]
-> Lots of profiles? Run the Scout a few times — say **"read the next 5"** after
-> each shortlist. Short runs give you results sooner. If anything needs you (the site logs you out or
-> shows a check), Muse saves its place and leaves you a one-line note; say
-> **"carry on"** when you're back.
+> 🔵 **Short in the chat, complete in the files.** The chat message is a quick summary.
+> The attached Excel sheet and full report have **every** profile in the run, with all the details.
 
-## 🔁 How it works
+---
+
+## 🔵 Install in Muse (2 minutes)
+
+1. 📥 Download the skill: **[matrimony_match_scout-muse-v0.3.4.zip](releases/matrimony_match_scout-muse-v0.3.4.zip)**
+2. 📎 Open **Muse**, start a chat, **attach the zip**, and say **"Install this skill for me"**
+3. 💬 Start a **new** chat and say **"Run matrimony scout"**
+
+> [!NOTE]
+> 🔵 That's all. There is nothing to install on your computer and no commands to learn — you just talk to Muse.
+
+---
+
+## 🟢 Your first run — start it, then walk away
 
 ```mermaid
 flowchart LR
-    A[5 questions] --> B[You log in yourself]
-    B --> C[Check ONE profile]
-    C --> D[You walk away<br/>Muse reads at a human pace]
-    D --> E[Come back:<br/>top 3 + report + Excel]
-    E --> F[Next time: only new or updated]
+    A["🟣 Answer<br/>5 questions"]:::you --> B["🔵 Log in<br/>yourself"]:::you
+    B --> C["🟢 Check ONE<br/>sample profile"]:::you
+    C --> D["⏳ Walk away<br/>Muse reads slowly"]:::muse
+    D --> E["📊 Come back:<br/>top 3 + Excel"]:::result
+    E --> F["💬 Send to<br/>WhatsApp?"]:::result
+    F --> G["🔁 Next time:<br/>only new / updated"]:::muse
+    classDef you fill:#dbeafe,stroke:#1f6feb,color:#0b1f44
+    classDef muse fill:#fef3c7,stroke:#d4a72c,color:#3d2c00
+    classDef result fill:#dcfce7,stroke:#2ea043,color:#0b3d1a
 ```
 
-1. **Hard filters first** — your dealbreakers exclude, no exceptions. Then a weighted score plus Muse's short judgement on fit and risks.
-2. **Unknowns stay unknown** — never assumed to pass or fail, always shown so you can check.
-3. **Any red flag you listed** (like "asks for money") caps the score.
+🔵 **Blue = you do it** (about 3 minutes) · 🟡 **Yellow = Muse works alone** · 🟢 **Green = your results**
 
-**Things you can say:** "check status" · "how much is left?" · "give me the report" ·
-"read 10 this time" · "read the next 5" · "change my age range to 26 to 30" · "pass on 2" · "interested in Asha" ·
-"why is 1 ranked first" · "draft a reply to Asha" · "what did you show me before"
+| Step | Who | What happens |
+|---|---|---|
+| 1 | 🔵 You | Say **"Run matrimony scout"** and answer **5 quick questions**: which site, who the search is for, age range, places that are okay, one dealbreaker |
+| 2 | 🔵 You | A browser opens on your matrimony site. **Log in yourself** — Muse never sees or stores your password |
+| 3 | 🔵 You | Muse shows what it read from **one** profile. Say **"yes"**, or correct it (*"age is 28"*) |
+| 4 | 🟡 Muse | Muse tells you how long the run will take — then you can **leave, or close the app** |
+| 5 | 🟡 Muse | It reads profiles one by one, like a person, and posts *"5 of 10 read — about 4 minutes left"* |
+| 6 | 🟢 You | **Come back later.** Your top 3 is waiting in the chat, with the Excel sheet attached |
+| 7 | 🟢 You | Say **"yes"** to WhatsApp if you want to send it to yourself or family |
 
-## 🔒 Privacy
+> [!IMPORTANT]
+> 🟣 **Log in with your mobile number + OTP, or email + password.** Google blocks
+> *"Sign in with Google"* in assistant-controlled browsers ("This browser or app may not be secure").
 
-The Scout keeps its notes in its own private folder in your Muse workspace and
-never uploads or sends them anywhere. Reports come to you in the chat; sharing
-is your choice. You log in yourself — your password is never seen or stored.
-Chats are kept as short summaries, never copies. No face recognition, no looks
-scoring. Say "delete all my scout data" and it's all gone. Details: [PRIVACY.md](PRIVACY.md) · [SECURITY.md](SECURITY.md)
+> [!NOTE]
+> 🔵 Fine-tune later from real examples: education, religion, community, mother tongue, food,
+> smoking and drinking, relocation, timeline, red flags and green flags — just say **"refine my criteria"**.
 
-## License
+---
 
-Copyright © 2026 Vishnu. All rights reserved. You may download and run the
+## 🟡 How long it takes
+
+Muse reads each profile carefully — opening the page, reading it, saving it —
+at about **30–60 seconds per profile**. To keep every run short, the Scout reads
+**5 profiles by default** and **at most 10 per run**. Ask for more and it will do more.
+
+| You say | 🟢 / 🟡 / 🔴 | Profiles this run | About how long |
+|---|---|---|---|
+| *nothing about numbers* | 🟢 default | **5** | **5–10 minutes** |
+| *"read 10 this time"* | 🟢 normal max | **10** | **8–15 minutes** |
+| *"read 25 this time"* | 🟡 only because you asked | **25** | Muse tells you before it starts |
+| *"read 500"* | 🔴 hard ceiling | **50** | the most in one run, to stay gentle on the site |
+| *"always do 20"* | 🟡 saved choice | **20** every run | until you change it |
+
+> [!TIP]
+> 🟢 Lots of profiles? Several short runs beat one long one. After each shortlist, just say **"read the next 5"** —
+> Muse reads profiles it hasn't seen yet first.
+
+---
+
+## 🟠 How your results arrive
+
+Everything comes to you **in the Muse chat** — you never open a folder.
+
+| | What | Details |
+|---|---|---|
+| 💬 | **The summary message** | 🔵 Summary · 🟢 Match your interests (top 3: why each fits, what's risky or unknown, next step) · 🟠 Need your attention |
+| 📊 | **Excel sheet** (`report.xlsx`) — always attached | **Ranked Matches** (rank, score, confidence, age, city, education, profession, why, risks, **needs attention**, judgement, chat, next step, link) · **Profile Details** (every field: height, income, religion, community, mother tongue, food and habits, horoscope, family, about-me…) · **Updated Since Last Report** (field, before, now) |
+| 📄 | **Full report** (`report.md`) | Summary → matches → needs-attention table → ranked list → every profile in detail; pasted into the chat if attaching isn't possible |
+| 🟢 | **WhatsApp** — only if you say yes | See below |
+
+### 💬 Sending to WhatsApp
+
+```mermaid
+flowchart LR
+    A["Muse: Want me to send<br/>this to WhatsApp?"]:::ask --> B{"WhatsApp<br/>connected?"}:::check
+    B -- "no" --> C["Muse asks you to<br/>connect WhatsApp once"]:::you
+    C --> D
+    B -- "yes" --> D["You pick who:<br/>yourself or family"]:::you
+    D --> E["Muse shows the exact<br/>message + Excel"]:::ask
+    E -- "you say send" --> F["✅ Sent"]:::done
+    E -- "change it" --> E
+    classDef ask fill:#fef3c7,stroke:#d4a72c,color:#3d2c00
+    classDef check fill:#ede9fe,stroke:#8250df,color:#2b1258
+    classDef you fill:#dbeafe,stroke:#1f6feb,color:#0b1f44
+    classDef done fill:#dcfce7,stroke:#2ea043,color:#0b3d1a
+```
+
+1. 🟡 After the report, Muse asks: **"Want me to send this to WhatsApp?"**
+2. 🟣 If WhatsApp isn't connected yet, Muse shows you how to **connect WhatsApp to Muse** (one time).
+3. 🔵 You say who it goes to — **yourself** or a **family member or group**.
+4. 🟡 Muse shows the **exact message** and the **Excel sheet** it will attach, for example:
+
+   ```text
+   *Matrimony shortlist - 20 Nov 2026*
+   8 profiles (7 new, 1 updated); 3 need attention. Full details in the attached Excel sheet.
+
+   *Match your interests:*
+   *1. Asha* (27, Seattle) - 90/100
+      + Lives in Seattle, one of your places; Education (MS) meets your minimum
+   ...
+   _Private - please do not forward further._
+   ```
+5. 🟢 Nothing is sent until you say **"send"**. Change anything first and Muse shows it again.
+
+> [!WARNING]
+> 🟡 A WhatsApp message contains other people's profile details. Send it only to family you trust.
+> Once sent, that copy lives in WhatsApp. No WhatsApp connection available? Forward the attached Excel sheet from the chat yourself.
+
+---
+
+## 🔴 How matches are scored
+
+Every profile goes through four steps, always in this order. The same profile and the same wishes always give the same score.
+
+| Step | Colour | What it does |
+|---|---|---|
+| **1. Must-haves & dealbreakers** | 🔴 | Age range, places, marital status, minimum education, must-match religion / community / mother tongue, height, food and habits you said are not okay, and **your dealbreakers** (smoking, drinking, non-veg, divorced, manglik, children, not willing to relocate…). A known fail **excludes — no exceptions**. |
+| **2. Points (0–80)** | 🔵 | Place (city 20 · state 14 · country 8) · education (up to 15) · career (15) · food and habits (5 each) · mother tongue (8), religion (4), community (3) preferred · green flags (+4 each, up to +10). Only what you set **and** the profile shows. |
+| **3. Judgement (0–20)** | 🟣 | Muse's short reading of fit and risks: how their own words match what you care about, and how the chat is going — always with a written reason. |
+| **4. Red-flag cap** | 🟠 | Any red flag you listed (for example *asks for money*, *pressure to move off the site*) **caps the score at 40** and is named in the risks. |
+
+| Marker | Meaning |
+|---|---|
+| 🟢 **confidence high** | The profile shows almost everything you care about |
+| 🟡 **confidence medium / low** | Some of it isn't shown — see *Unknown - please check* |
+| ⚪ **Unknown** | Never counted for or against anyone. Always listed so you can ask. |
+| ✅ **Matches your interests** | Score 60+ and no red flag — listed first in the summary |
+| ⚠️ **Needs your attention** | Waiting for your reply, red flag, chat contradicts profile, changed since last time, or something you care about isn't shown |
+| 🚫 | No face recognition, no photo analysis, no looks scoring — ever |
+
+---
+
+## 🟤 Memory — never the same profile twice
+
+| | Rule |
+|---|---|
+| 🧠 | Every profile Muse has shown you is logged. **It is never shown again** unless it changed. |
+| 🔄 | A changed profile (new job, new chat message…) comes back **once**, marked **Updated**, with *before → now* in the Excel tab |
+| 🙅 | Say *"pass on 2"* and that person **never** comes back |
+| ✏️ | Change your wishes and everyone already read is **re-scored from saved notes** — no browsing |
+| 📝 | Your wishes live in an editable file. Edit it by hand and Muse **notices and asks** before using the change — it never overwrites you silently |
+| 💾 | Progress is saved after **every** profile — a dropped connection resumes, never restarts |
+
+---
+
+## ⚪ Things you can say
+
+| To… | Say |
+|---|---|
+| Start | *"run matrimony scout"*, *"lets start"* |
+| Scan | *"scan"*, *"check my chats"*, *"read 10 this time"*, *"read the next 5"* |
+| See time | *"how long will this take?"*, *"how much is left?"* |
+| Results | *"give me the report"*, *"give me the excel"*, *"send it to WhatsApp"* |
+| Change wishes | *"change my age range to 26 to 30"*, *"add Pune to my places"*, *"my dealbreaker is smoking"*, *"refine my criteria"* |
+| Decide | *"interested in Asha"*, *"pass on 2"*, *"why is 1 ranked first"*, *"draft a reply to Asha"* |
+| Check | *"check status"*, *"what did you show me before"* |
+| Files | attach biodata PDFs, Word files, screenshots, chat exports or broker spreadsheets and say *"read my files"* |
+| Privacy | *"how do you read my data?"*, *"delete all my scout data"* |
+| Try it | *"show me a matrimony scout demo"* |
+
+---
+
+## 🛡️ Privacy & safety
+
+> [!CAUTION]
+> 🔴 **Things the Scout never does:**
+> - ❌ ask for, see, type or store your password or one-time codes
+> - ❌ send, accept, decline or shortlist anything on the site — or send anything on WhatsApp — without your approval of the exact message and recipient
+> - ❌ copy your conversations (chats become a one-line summary)
+> - ❌ store phone numbers or email addresses from profiles or spreadsheets
+> - ❌ use face recognition or judge photos or looks
+> - ❌ upload your data anywhere, or browse fast — one profile at a time, small caps
+
+| | Where your data lives |
+|---|---|
+| 🔒 | The Scout's notes are in its own **private folder in your Muse workspace** — your wishes, the profiles read, what you were shown, and reports |
+| 💬 | Reports reach you **in the chat**. Sharing (WhatsApp or forwarding) is always your choice |
+| 🗑️ | Say **"delete all my scout data"** — after you confirm, everything is gone |
+
+Details: [PRIVACY.md](PRIVACY.md) · [SECURITY.md](SECURITY.md)
+
+---
+
+## ❓ Questions & fixes
+
+| You see | 🟢 What to do |
+|---|---|
+| 🔴 *"Couldn't sign you in — this browser or app may not be secure"* | That's Google. Log in to Shaadi with **mobile number + OTP** or **email + password** instead of *Sign in with Google* |
+| 🟡 *"The site logged you out after 7 profiles"* | Log in again in the browser and say **"carry on"** — nothing read is lost |
+| 🟡 *"10 is the most per run unless you ask for more"* | Say **"read 20 this time"** (up to 50) |
+| 🟡 It's slow | That's on purpose: careful, person-like reading. Start it and come back later, or do **"read the next 5"** runs |
+| ⚪ *"Nothing new since your last report"* | Everyone has already been shown to you. Say **"scan"** later to look for new profiles |
+| ⚪ *"None of the new profiles pass your must-haves"* | Loosen one thing, e.g. *"change my age range to 25 to 32"* |
+| 🟣 WhatsApp isn't offered | Connect WhatsApp in Muse when asked — or forward the attached Excel sheet from the chat |
+| 🟤 A field was read wrong | Correct it during the one-profile check (*"education is MBA"*) |
+
+---
+
+## 🧑‍💻 For developers
+
+```text
+skills/matrimony_match_scout/
+├── SKILL.md            ← what Muse follows, step by step
+├── START-HERE.md       ← plain-words guide for the person
+├── references/         ← intake, login, site playbooks (Shaadi, generic), schema,
+│                         scoring rubric, file reading, memory, conversation map
+├── scripts/            ← scout.py (the actions Muse calls), state_store, score,
+│                         extract, pipeline, build_report (Excel/Markdown),
+│                         timing (estimates), file_intake
+├── templates/          ← every interests setting, with defaults
+├── examples/           ← fictional profiles for the demo
+└── tests/              ← 63 tests, fictional data only
+```
+
+```bash
+python3 -m pip install -r requirements.txt                          # openpyxl (+ pypdf, optional)
+python3 -m unittest discover -s skills/matrimony_match_scout/tests  # run the tests
+python3 tools/build_release.py                                      # build the Muse zip in releases/
+```
+
+Changes: [CHANGELOG.md](CHANGELOG.md) · Releasing: [PUBLISH.md](PUBLISH.md)
+
+---
+
+## 📜 License
+
+Copyright © 2026 Vishnu. **All rights reserved.** You may download and run the
 Scout for your own search; no copying, redistributing or selling without
 written permission. See [LICENSING.md](LICENSING.md).

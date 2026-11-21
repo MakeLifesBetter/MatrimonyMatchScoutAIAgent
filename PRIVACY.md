@@ -31,6 +31,13 @@ You never need to open it - reports come to you as chat attachments:
 - Never uploads your data anywhere, and never sends a report to anyone unless
   you approve the exact message and who it goes to
 
+## WhatsApp (only if you ask)
+If you ask Muse to send your shortlist to WhatsApp, it uses the WhatsApp
+connection you set up in Muse. You see the exact message, the attached Excel
+sheet and the recipient before anything is sent. Once sent, that copy lives in
+WhatsApp under WhatsApp's privacy terms, and the people you send it to can see
+other people's profile details - share only with family you trust.
+
 ## Deleting everything
 Say "delete all my scout data" to Muse. After you confirm, the folder is
 deleted. Reports you already forwarded to others are theirs to delete.

@@ -37,26 +37,34 @@ reads — nothing is sent, accepted or rejected on the site. Say "stop" at any
 time; progress is saved after every profile, so "carry on" picks up from there.
 
 ## What you get
-A short message like this (made-up people):
+A short summary in the chat, in three parts (made-up people):
 
-> Here are your top 3 (5 new):
+> **Summary:** 8 profiles in this report - 7 new, 1 updated; 2 left out by your
+> dealbreakers. 3 match your interests well, 3 need your attention.
+>
+> **Match your interests:**
 > 1. Asha, 27, Seattle - Software Engineer. Score 90/100 (confidence high).
->    Why it fits: Age 27 is in your range; Lives in Seattle, one of your places
->    Risky or unknown: nothing spotted
->    Chat: they wrote last and asked you something. Next: I can draft a reply.
+>    Why it fits: Lives in Seattle, one of your places; Education (MS) meets your minimum
 > 2. Priya, 28, Bellevue - Data Analyst. Score 85/100 ...
-> 3. Lakshmi, 30, Seattle - Teacher. Score 70/100 (confidence low).
->    Risky or unknown: Unknown - please check: education, smoking
+> 3. Divya, 29, San Jose - Product Manager. Score 75/100 ...
+>
+> **Need your attention:**
+> - Asha: waiting for your reply (asked about a phone or video call)
+> - Meera: changed since you last saw it - profession: Analyst -> Manager
+> - Lakshmi: not shown, please check - education, smoking
 
-…with the full report and an **Excel sheet** (Ranked Matches / Profile Details /
-Updated Since Last Report) attached right there in the chat, ready to forward to family.
+…with an **Excel sheet** (Ranked Matches / Profile Details / Updated Since Last
+Report) and the full report attached right there in the chat. Then Muse asks:
+**"Want me to send this to WhatsApp?"** Say yes, connect WhatsApp once if Muse
+asks, pick who it goes to (yourself or family), check the message — and it is
+sent only when you say "send".
 
 ## Things you can say
 "run matrimony scout" · "read 10 this time" · "read the next 5" · "how much is left?" ·
 "give me the report" · "check status" · "how do you read my data?" ·
 "change my age range to 26 to 30" · "add Pune to my places" ·
 "my dealbreaker is smoking" · "pass on 2" · "interested in Asha" ·
-"why is 1 ranked first" · "draft a reply to Asha" ·
+"why is 1 ranked first" · "draft a reply to Asha" · "send it to WhatsApp" ·
 "what did you show me before" · "read my files" · "refine my criteria"
 
 There are no commands to learn — say it your way.

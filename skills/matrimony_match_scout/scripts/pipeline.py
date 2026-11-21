@@ -121,6 +121,31 @@ def change_lines(diff):
     return lines
 
 
+MATCH_MIN_SCORE = 60
+
+
+def attention_items(d, res, status, diff):
+    """Short reasons this profile needs the person to do or check something."""
+    out = []
+    chat = d.get("chat") or {}
+    if res["red_flags_found"]:
+        out.append("red flag - " + res["red_flags_found"][0].split(" (mentions")[0])
+    for c in chat.get("contradictions") or []:
+        out.append("chat contradicts profile - " + c)
+    if chat.get("exists") and chat.get("last_message_by") == "them":
+        q = (chat.get("open_questions") or [""])[0]
+        out.append("waiting for your reply" + (f" ({q})" if q else ""))
+    if status == "Updated":
+        lines = change_lines(diff)
+        out.append("changed since you last saw it" + (f" - {lines[0]}" if lines else ""))
+    if res["unknowns"]:
+        out.append("not shown, please check - " + ", ".join(dict.fromkeys(
+            u.split(" (for your")[0] for u in res["unknowns"]))[:80])
+    for m in res.get("needs_check") or []:
+        out.append(f"check yourself - '{m}'")
+    return out
+
+
 def _row(rec, res, status, diff):
     d = rec["data"]
     horo = d.get("horoscope") or {}
@@ -136,6 +161,8 @@ def _row(rec, res, status, diff):
                 "next_step": res["next_step"], "chat_status": chat_status(d.get("chat")),
                 "horoscope_text": "; ".join(f"{k.replace('_', ' ')} {v}" for k, v in horo.items()),
                 "sources": ", ".join(rec.get("sources") or []),
+                "red_flags": res["red_flags_found"],
+                "attention": attention_items(d, res, status, diff),
                 "changes": change_lines(diff) if status == "Updated" else [],
                 "change_rows": diff if status == "Updated" else [],
                 "_interested": rec.get("user_status") == "interested",
@@ -171,6 +198,31 @@ def report_rows(store):
                                "candidates": len(cand["new"]) + len(cand["updated"])}
 
 
+def whatsapp_text(rows, limit=3):
+    """A short WhatsApp message (WhatsApp *bold*), sent only after the person approves it.
+    Names and first-line reasons only - the details stay in the attached Excel sheet."""
+    new = sum(r["status"] == "New" for r in rows)
+    upd = len(rows) - new
+    top = [r for r in rows if build_report.is_match(r)][:limit] or rows[:limit]
+    need = [r for r in rows if r.get("attention")]
+    lines = [f"*Matrimony shortlist - {datetime.now().strftime('%d %b %Y')}*",
+             f"{len(rows)} profiles ({new} new" + (f", {upd} updated" if upd else "") + f"); "
+             f"{len(need)} need attention. Full details in the attached Excel sheet.", "",
+             "*Match your interests:*"]
+    for r in top:
+        bits = ", ".join(str(x) for x in (r.get("age"), r.get("city")) if x)
+        tag = " _(updated)_" if r["status"] == "Updated" else ""
+        lines.append(f"*{r['rank']}. {r.get('name') or 'Name not shown'}*" + (f" ({bits})" if bits else "")
+                     + f" - {r['score']}/100{tag}")
+        reasons = [w for w in r["why_fit"] if not w.startswith("Age ")] or r["why_fit"]
+        if reasons:
+            lines.append(f"   + {'; '.join(reasons[:2])}")
+        if r["risks"]:
+            lines.append(f"   ! {r['risks'][0]}")
+    lines += ["", "_Private - please do not forward further._"]
+    return "\n".join(lines)[:1500]
+
+
 def make_report(store, mark_shown=True):
     """Build the report. Returns a dict with 'status':
     no_profiles | all_excluded | nothing_new | ok."""
@@ -200,7 +252,8 @@ def make_report(store, mark_shown=True):
     share = (f"Matrimony shortlist, {datetime.now().strftime('%d %b %Y')} (private - please do not forward "
              "further):\n" + out["digest"])
     return {"status": "ok", "report_id": report_id, "rows": rows, "excluded": tally,
-            "attach": [out["excel"], out["markdown"]], "share_text": share,
+            "attach": [out["excel"], out["markdown"]], "excel": out["excel"], "share_text": share,
+            "whatsapp_text": whatsapp_text(rows),
             "new": sum(r["status"] == "New" for r in rows),
             "updated": sum(r["status"] == "Updated" for r in rows), **out}
 

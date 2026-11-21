@@ -17,7 +17,8 @@ RANKED_COLUMNS = [
     ("rank", "Rank"), ("status", "New / Updated"), ("name", "Name"), ("score", "Score"),
     ("confidence", "Confidence"), ("age", "Age"), ("city", "City"), ("country", "Country"),
     ("education", "Education"), ("profession", "Profession"), ("why_fit", "Why it fits"),
-    ("risks", "Risky or unknown"), ("judgement", "Judgement"), ("chat_status", "Chat"),
+    ("risks", "Risky or unknown"), ("attention", "Needs attention"), ("judgement", "Judgement"),
+    ("chat_status", "Chat"),
     ("next_step", "Suggested next step"), ("profile_url", "Profile link"),
     ("profile_id", "Profile ID"),
 ]
@@ -57,30 +58,44 @@ def headline(r):
     return line
 
 
+def is_match(r, min_score=60):
+    return r["score"] >= min_score and not r.get("red_flags")
+
+
 def build_digest(rows, updated_count=0, excluded_count=0):
+    """The chat message: summary, profiles that match your interests, profiles
+    that need your attention. The attached files hold everything else."""
     if not rows:
         return "Nothing new since your last report. I did not repeat anyone you have already seen."
     new_count = sum(1 for r in rows if r["status"] == "New")
-    n = min(3, len(rows))
-    head = (f"Here are your top {n}" if n == 3 else "Here is your match" if n == 1
-            else f"Here are your {n} matches")
-    head += f" ({new_count} new" + (f", {updated_count} updated" if updated_count else "") + ")"
-    lines = [head + ":"]
-    for r in rows[:3]:
-        tag = " [UPDATED]" if r["status"] == "Updated" else ""
-        lines.append(f"{r['rank']}. {headline(r)}.{tag} Score {r['score']}/100 "
-                     f"(confidence {r['confidence']}).")
-        if r["status"] == "Updated" and r.get("changes"):
-            lines.append("   What changed: " + "; ".join(r["changes"][:3]))
-        lines.append("   Why it fits: " + (_join(r["why_fit"]) or "passes all your must-haves"))
-        lines.append("   Risky or unknown: " + (_join(r["risks"]) or "nothing spotted"))
-        lines.append(f"   Chat: {r['chat_status']}. Next: {r['next_step']}.")
-    if len(rows) > 3:
-        more = len(rows) - 3
-        lines.append(f"{more} more {'is' if more == 1 else 'are'} in the full report and Excel sheet.")
-    if excluded_count:
-        lines.append(f"{excluded_count} profile(s) were left out by your filters or dealbreakers.")
-    return "\n".join(lines)
+    matches = [r for r in rows if is_match(r)][:3]
+    attention = [r for r in rows if r.get("attention")]
+    L = ["Summary: " + f"{len(rows)} profile(s) in this report - {new_count} new"
+         + (f", {updated_count} updated" if updated_count else "")
+         + (f"; {excluded_count} left out by your must-haves or dealbreakers" if excluded_count else "")
+         + f". {len([r for r in rows if is_match(r)])} match your interests well, "
+         f"{len(attention)} need your attention.", ""]
+    if matches:
+        L.append(f"MATCH YOUR INTERESTS (top {len(matches)}):")
+        for i, r in enumerate(matches, 1):
+            tag = " [UPDATED]" if r["status"] == "Updated" else ""
+            L.append(f"{i}. {headline(r)}.{tag} Score {r['score']}/100 (confidence {r['confidence']}).")
+            L.append("   Why it fits: " + (_join(r["why_fit"]) or "passes all your must-haves"))
+            L.append("   Risky or unknown: " + (_join(r["risks"]) or "nothing spotted"))
+            L.append(f"   Chat: {r['chat_status']}. Next: {r['next_step']}.")
+    else:
+        L.append("MATCH YOUR INTERESTS: no strong matches this time - see the attached sheet for everyone.")
+    L.append("")
+    if attention:
+        L.append(f"NEED YOUR ATTENTION ({len(attention)}):")
+        for r in attention[:6]:
+            L.append(f"- {r.get('name') or 'Name not shown'}: " + "; ".join(r["attention"][:2]))
+        if len(attention) > 6:
+            L.append(f"- ...and {len(attention) - 6} more in the attached sheet.")
+    else:
+        L.append("NEED YOUR ATTENTION: nothing right now.")
+    L += ["", "The attached Excel sheet and full report have every profile in detail."]
+    return "\n".join(L)
 
 
 def build_markdown(rows, path, excluded=None, generated=None, criteria_summary=""):
@@ -94,9 +109,18 @@ def build_markdown(rows, path, excluded=None, generated=None, criteria_summary="
          "People you have seen before only appear again if their profile or chat changed.", ""]
     if criteria_summary:
         L += [f"**What you asked for:** {criteria_summary}", ""]
-    L += ["## Top 3", ""]
-    for r in rows[:3]:
-        L += [f"### {r['rank']}. {headline(r)}" + (" - UPDATED" if r["status"] == "Updated" else ""),
+    matches = [r for r in rows if is_match(r)]
+    attention = [r for r in rows if r.get("attention")]
+    L += ["## Summary", "",
+          f"- **{len(rows)}** profile(s) in this report: **{len(new)} new**, **{len(upd)} updated**",
+          f"- **{len(matches)}** match your interests well (score 60+ and no red flag)",
+          f"- **{len(attention)}** need your attention",
+          f"- **{sum(excluded.values())}** left out by your must-haves or dealbreakers", ""]
+    L += ["## Profiles that match your interests", ""]
+    if not matches:
+        L += ["No strong matches this time - everyone in this report is listed below.", ""]
+    for i, r in enumerate(matches, 1):
+        L += [f"### {i}. {headline(r)}" + (" - UPDATED" if r["status"] == "Updated" else ""),
               f"**Score {r['score']}/100** - confidence {r['confidence']}", "",
               f"- **Why it fits:** {_join(r['why_fit']) or 'passes all your must-haves'}",
               f"- **Risky or unknown:** {_join(r['risks']) or 'nothing spotted'}",
@@ -105,6 +129,14 @@ def build_markdown(rows, path, excluded=None, generated=None, criteria_summary="
               f"- **Suggested next step:** {r['next_step']}"]
         if r.get("profile_url"):
             L.append(f"- **Profile:** {r['profile_url']}")
+        L.append("")
+    L += ["## Profiles that need your attention", ""]
+    if not attention:
+        L += ["Nothing needs your attention right now.", ""]
+    else:
+        L += ["| Name | Score | Why it needs you |", "|---|---|---|"]
+        for r in attention:
+            L.append(f"| {r.get('name') or '-'} | {r['score']} | {'; '.join(r['attention'])} |")
         L.append("")
     if rows:
         L += ["## Ranked list", "",
@@ -129,6 +161,7 @@ def build_markdown(rows, path, excluded=None, generated=None, criteria_summary="
                   f"- Horoscope: {r.get('horoscope_text') or 'not shown'}",
                   f"- Why it fits: {_join(r['why_fit']) or '-'}",
                   f"- Risky or unknown: {_join(r['risks']) or 'nothing spotted'}",
+                  f"- Needs attention: {_join(r.get('attention')) or 'no'}",
                   f"- Chat: {r['chat_status']}",
                   f"- About (their words, trimmed): {(r.get('about_me') or 'not shown')[:300]}", ""]
     if upd:
@@ -182,7 +215,7 @@ def build_excel(rows, path):
     ws = wb.active
     ws.title = "Ranked Matches"
     sheet(ws, RANKED_COLUMNS, rows, {"why_fit": 45, "risks": 50, "judgement": 40,
-                                      "chat_status": 34, "next_step": 30, "profile_url": 34,
+                                      "chat_status": 34, "next_step": 30, "profile_url": 34, "attention": 45,
                                       "name": 20, "rank": 6, "score": 8, "age": 6})
     sheet(wb.create_sheet("Profile Details"), DETAIL_COLUMNS, rows,
           {"about_me": 60, "family_summary": 40, "partner_preference_text": 40,

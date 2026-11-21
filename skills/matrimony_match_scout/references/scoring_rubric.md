@@ -46,6 +46,17 @@ with simple rules and labels it "Rule-based reading".
 Any red flag from the user's list — found in the chat or in their profile text —
 caps the total at **40** and is named in the risks with a few words of evidence.
 
+## Match vs. needs attention (the chat summary)
+- **Matches your interests**: not excluded, score 60 or more, and no red flag.
+  The top 3 of these lead the summary.
+- **Needs your attention**: any profile in the report with a red flag, a chat
+  that contradicts the profile, a chat where they wrote last (waiting for a
+  reply), a change since the person last saw it, values not shown that the
+  person cares about, or a dealbreaker that can only be checked by the person.
+  A profile can be in both lists (a great match waiting for a reply).
+- Everyone in the report — matches or not — is in the attached Excel sheet
+  (with a "Needs attention" column) and the full report.
+
 ## Output per profile
 score 0–100, excluded + reasons, why it fits (up to 4 plain reasons), risks
 (red flags, contradictions, unknowns, things to check yourself), confidence

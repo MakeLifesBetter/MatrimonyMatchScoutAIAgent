@@ -21,8 +21,9 @@ Never show raw JSON, file paths or tool names to the user unless they ask.
 ## Rules that are never broken
 
 - Read-only by default. Never click Send, Accept, Decline, Shortlist, Block or
-  Send Interest, and never send a message, unless the user approved that exact
-  action or the exact message text in this conversation.
+  Send Interest, and never send a message — on the matrimony site or on
+  WhatsApp — unless the user approved that exact action, message text and
+  recipient in this conversation.
 - The user logs in themselves. Never ask for, type, read, or store a password,
   one-time code, or CAPTCHA answer.
 - Human pace: one profile at a time, several seconds apart, first two list
@@ -163,18 +164,35 @@ Run `report`. It returns `status`:
 - `all_excluded` → nothing new passes; name the reasons and offer to loosen one.
 - `nothing_new` → say so plainly; never resend an earlier list.
 - `ok` → deliver it in the chat, in ONE reply:
-  1. The top 3 from `digest` in plain English (why each fits, what is risky or
-     unknown).
-  2. Attach both files from `attach`: the Excel sheet (Ranked Matches / Profile
-     Details / Updated Since Last Report) and the full report. Say in one line
-     that they can open or forward them to family from the chat.
+  1. The summary from `digest`, in its three parts, in plain English:
+     **Summary** (how many profiles, new / updated / left out),
+     **Match your interests** (the best fits — why each fits, what is risky or
+     unknown), and **Need your attention** (waiting for their reply, red flags,
+     changed since last time, things not shown that they should check).
+     Keep the chat message short; the attachments carry the full detail.
+  2. **Always attach the Excel sheet** (`excel`: Ranked Matches / Profile
+     Details / Updated Since Last Report) and the full report (the other file in
+     `attach`). Say in one line that the Excel sheet has everyone in this report
+     and can be forwarded to family.
   3. If you cannot attach files, paste the full report (the `.md` file's text)
-     into the chat instead.
+     into the chat and say the Excel sheet could not be attached.
+  4. End with one question: "Want me to send this to WhatsApp?"
   Never tell the person to open a folder or give them a file path.
-- Sharing with family is the person's choice. If they ask you to send it,
-  draft a short note from `share_text`, show the exact text and who it goes to,
-  and send only after they approve, through a messaging connector if one is
-  available. Otherwise they forward the attachments themselves.
+
+### Sending to WhatsApp (only when the person says yes)
+1. Check for a WhatsApp connection with `muse.connector_search` ("WhatsApp").
+   - Not connected → say "To send it, connect WhatsApp to Muse first," and show
+     the connect option the search returns. Wait for them to connect, then go on.
+     If no WhatsApp connector exists, say so in one sentence and remind them they
+     can forward the attached Excel sheet from the chat themselves.
+2. Ask who it goes to: themselves ("Message yourself") or a family contact or
+   group. Use the name they give; never guess a contact.
+3. Show exactly what will be sent: the `whatsapp_text` message and the Excel
+   sheet as an attachment, and the recipient. Ask "Send this?"
+4. Send only after a clear yes to that exact message and recipient. Any change
+   ("drop number 3", "send to Amma instead") → show it again and ask again.
+5. Confirm in one sentence ("Sent to Amma on WhatsApp."). Never send to WhatsApp
+   on your own, on a schedule, or again later without being asked again.
 `report` marks the shown profiles as shown; use `report --preview` if you are
 not about to show it. Updated profiles carry "what changed".
 
@@ -191,6 +209,8 @@ Memory rules are in [Persistence](references/persistence.md).
 
 ## Available connectors
 
+- WhatsApp (to send the shortlist and Excel sheet, only on request) — find and
+  connect it with `muse.connector_search`; see "Sending to WhatsApp" above.
 - Use `muse.connector_search` to find other connectors and `muse.skill_search`
   to find related skills.
 
