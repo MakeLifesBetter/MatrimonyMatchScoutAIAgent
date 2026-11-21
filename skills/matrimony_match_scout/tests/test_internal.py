@@ -150,6 +150,17 @@ class InternalActionTests(unittest.TestCase):
         self.assertIn("California", rep["call_tip"])
         self.assertIn("Calls: 1 call(s) - last 2026-11-21", md)
 
+    def test_first_run_welcome_summary(self):
+        d = tmpdir()
+        self.assertTrue(act(d, "status")["first_run"])
+        w = act(d, "welcome")["say"]
+        for feature in ("Shortlist", "Top 3", "Excel", "WhatsApp", "Never twice", "Dealbreakers",
+                        "Call summaries", "only if the other person agreed", "Your language",
+                        "Safe and private", "5-10 minutes", "5 quick questions"):
+            self.assertIn(feature, w)
+        self.assertLessEqual(len([l for l in w.splitlines() if l.startswith("- ")]), 10)  # crisp
+        self.assertFalse(act(d, "status")["first_run"])          # shown once
+
     def test_chat_checkpoint_resume(self):
         d = tmpdir()
         (d / "cp.json").write_text(json.dumps({"phase": "SCAN", "run_id": "chat-1",

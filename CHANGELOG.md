@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.6 — 2026-11-20
+- First-run welcome: right after install (status `first_run`), Muse opens with a
+  crisp ten-line summary of what the Scout can do (`welcome`), in the person's
+  language, then starts the five questions; "what can you do?" shows it again
+- README install section shows the welcome; START-HERE mentions it
+- 65 tests
+
 ## 0.3.5 — 2026-11-20
 - Call summaries: new `add-call <id> <file> --consent notes-only|recorded-with-consent`
   saves a short summary (600 characters max) with green flags, red flags,

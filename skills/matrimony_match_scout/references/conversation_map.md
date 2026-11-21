@@ -6,6 +6,7 @@ never JSON, file paths or tool names unless they ask.
 
 | They say something like | Action |
 |---|---|
+| "what can you do?", "what is this skill?", first run after install | `welcome` — the crisp feature list — then the five questions |
 | "run matrimony scout", "lets start", "help me find matches" | Start: `status`, then intake if no interests (SKILL.md 0–1) |
 | "scan", "check my chats", "open shaadi", "find new matches", "carry on" | Login → one-profile check → `scan-start` estimate → unattended scan |
 | "how long will this take?", "how much is left?" | `scan-start` estimate before; `scan-progress` during |

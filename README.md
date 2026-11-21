@@ -1,8 +1,8 @@
 # 💍 Matrimony Match Scout — a skill for Muse
 
-![version](https://img.shields.io/badge/version-v0.3.5-1f6feb?style=for-the-badge)
+![version](https://img.shields.io/badge/version-v0.3.6-1f6feb?style=for-the-badge)
 ![works in](https://img.shields.io/badge/works%20in-Muse-7A2E4D?style=for-the-badge)
-![tests](https://img.shields.io/badge/tests-64%20passing-2ea043?style=for-the-badge)
+![tests](https://img.shields.io/badge/tests-65%20passing-2ea043?style=for-the-badge)
 ![privacy](https://img.shields.io/badge/data-private%20to%20you-8250df?style=for-the-badge)
 ![languages](https://img.shields.io/badge/talk%20in-your%20language-f97316?style=for-the-badge)
 ![license](https://img.shields.io/badge/license-All%20Rights%20Reserved-cf222e?style=for-the-badge)
@@ -94,12 +94,33 @@ Want me to send this to WhatsApp?
 
 ## 🔵 Install in Muse (2 minutes)
 
-1. 📥 Download the skill: **[matrimony_match_scout-muse-v0.3.5.zip](releases/matrimony_match_scout-muse-v0.3.5.zip)**
+1. 📥 Download the skill: **[matrimony_match_scout-muse-v0.3.6.zip](releases/matrimony_match_scout-muse-v0.3.6.zip)**
 2. 📎 Open **Muse**, start a chat, **attach the zip**, and say **"Install this skill for me"**
 3. 💬 Start a **new** chat and say **"Run matrimony scout"**
 
 > [!NOTE]
 > 🔵 That's all. There is nothing to install on your computer and no commands to learn — you just talk to Muse.
+
+**The first time you run it, Muse opens with a quick summary of everything it can do:**
+
+```text
+Welcome to Matrimony Match Scout - here is what I can do for you:
+
+- Shortlist: I read your own matrimony account and rank every profile against what you want.
+- Top 3 first: who matches your interests, who needs your attention, and why.
+- Excel + full report: attached in the chat every time, ready to share with family.
+- WhatsApp: I can send the shortlist and Excel sheet - only after you approve the message.
+- Never twice: you never see the same profile again unless it changed (marked Updated).
+- Dealbreakers and red flags: dealbreakers rule a profile out; red flags are called out.
+- Call summaries: tell me how a call went - or send a recording, only if they agreed.
+- Your language: Telugu, Hindi, Tamil, Hinglish, English or another language.
+- Safe and private: you log in yourself, I only read, nothing is sent without your OK.
+- Time: about 5-10 minutes for 5 profiles - you can leave and come back.
+
+Let's start with 5 quick questions. Or say "show me a demo" to see an example first.
+```
+
+Ask *"what can you do?"* any time to see it again.
 
 ---
 
@@ -374,7 +395,7 @@ skills/matrimony_match_scout/
 │                         timing (estimates), file_intake
 ├── templates/          ← every interests setting, with defaults
 ├── examples/           ← fictional profiles for the demo
-└── tests/              ← 64 tests, fictional data only
+└── tests/              ← 65 tests, fictional data only
 ```
 
 ```bash

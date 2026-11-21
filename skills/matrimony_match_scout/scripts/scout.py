@@ -4,7 +4,7 @@ Matrimony Match Scout - actions for the Muse skill (JSON out).
 Muse drives the browser and the conversation; these actions keep the memory,
 scoring and reports deterministic. Never show the JSON to the user.
 
-  scout.py --data-dir D status | interests | history | rescore | demo
+  scout.py --data-dir D status | welcome | interests | history | rescore | demo
   scout.py --data-dir D save-interests FILE.json [--confirm-hand-edit]
   scout.py --data-dir D hand-edit accept|revert
   scout.py --data-dir D scan-start [--cap N] [--user-asked] [--list-pages K] [--no-calibration]
@@ -46,6 +46,22 @@ from state_store import ExternalEditPending, InterestsFileError, ScoutStore  # n
 DEFAULT_DATA = Path(os.environ.get("SCOUT_DATA_DIR") or "~/matrimony-scout-data").expanduser()
 
 
+WELCOME = """Welcome to Matrimony Match Scout - here is what I can do for you:
+
+- Shortlist: I read your own matrimony account (chats, interests received, matches, search) and rank every profile against what you want.
+- Top 3 first: a short summary - who matches your interests, who needs your attention, and why.
+- Excel + full report: attached in the chat every time, ready to share with family.
+- WhatsApp: I can send the shortlist and Excel sheet to you or your family - only after you approve the message.
+- Never twice: you never see the same profile again unless it changed (marked Updated).
+- Dealbreakers and red flags: dealbreakers rule a profile out; red flags (like asking for money) are called out.
+- Call summaries: tell me how a call went - or send a recording, only if the other person agreed - for green and red flags.
+- Your language: talk to me in Telugu, Hindi, Tamil, Hinglish, English or another language.
+- Safe and private: you log in yourself, I only read, nothing is sent without your OK, your notes stay private.
+- Time: about 5-10 minutes for 5 profiles - you can leave and come back.
+
+Let's start with 5 quick questions. Or say "show me a demo" to see an example first."""
+
+
 def _opt(rest, name, default=None, cast=str):
     return cast(rest[rest.index(name) + 1]) if name in rest else default
 
@@ -81,6 +97,7 @@ def internal(store, args):
                "scan_in_progress": st.get("progress"),
                "chat_checkpoint": store.load_checkpoint(),
                "scores_stale": st.get("scores_stale"),
+               "first_run": not data and not store.load_profiles() and not st.get("welcomed"),
                "recovered_files": store.recovered, "data_dir": str(store.dir)}
     elif cmd == "interests":
         c = store.criteria()
@@ -120,6 +137,9 @@ def internal(store, args):
         out = timing.tick(store, 0) if p else {"say": "No scan is running."}
     elif cmd == "scan-end":
         out = timing.finish(store)
+    elif cmd == "welcome":
+        store.update_state(welcomed=True)
+        out = {"say": WELCOME}
     elif cmd == "demo":
         out = demo()
     elif cmd == "judge":

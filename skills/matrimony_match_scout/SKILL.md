@@ -68,7 +68,12 @@ Never show raw JSON, file paths or tool names to the user unless they ask.
    (the edited copy is kept). Never save interests over an unconfirmed edit.
 3. If the file is broken: say which line, and offer to restore the last good copy.
 4. If a checkpoint exists, offer to carry on from it instead of starting over.
-5. Greet in one or two sentences. Never ask the user to type a command.
+5. **First run** (`status.first_run` is true — right after the skill is installed,
+   or the first time this person uses it): run `welcome` and show its `say` text
+   as the opening message — the crisp list of what the Scout can do — in the
+   person's language, then go straight to the five questions. Show it once;
+   later runs skip it. If the person asks "what can you do?", show it again.
+6. Otherwise greet in one or two sentences. Never ask the user to type a command.
 
 ## 1. Intake — five questions first
 

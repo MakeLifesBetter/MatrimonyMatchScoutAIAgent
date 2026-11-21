@@ -21,6 +21,11 @@ Muse tells you the estimate before it starts and the time left as it goes.
 So: answer the questions, log in, check one profile — then **leave or close the
 app and come back later**. Your shortlist will be waiting.
 
+## The first thing you see
+Right after you install it, Muse shows a short list of everything the Scout can
+do — the shortlist, the Excel sheet, WhatsApp, call summaries, your language,
+privacy and timing. Say **"what can you do?"** any time to see it again.
+
 ## The only 3 things you will ever be asked to do
 1. **Answer 5 short questions** — which site, who the search is for, the age
    range, the places that are okay, and one dealbreaker. Change any answer
