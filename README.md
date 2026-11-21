@@ -1,9 +1,10 @@
 # 💍 Matrimony Match Scout — a skill for Muse
 
-![version](https://img.shields.io/badge/version-v0.3.4-1f6feb?style=for-the-badge)
+![version](https://img.shields.io/badge/version-v0.3.5-1f6feb?style=for-the-badge)
 ![works in](https://img.shields.io/badge/works%20in-Muse-7A2E4D?style=for-the-badge)
-![tests](https://img.shields.io/badge/tests-63%20passing-2ea043?style=for-the-badge)
+![tests](https://img.shields.io/badge/tests-64%20passing-2ea043?style=for-the-badge)
 ![privacy](https://img.shields.io/badge/data-private%20to%20you-8250df?style=for-the-badge)
+![languages](https://img.shields.io/badge/talk%20in-your%20language-f97316?style=for-the-badge)
 ![license](https://img.shields.io/badge/license-All%20Rights%20Reserved-cf222e?style=for-the-badge)
 
 > **Too many matrimony profiles and chats to check one by one?**
@@ -12,6 +13,11 @@
 > you a short ranked shortlist with a reason for each match — plus an
 > **Excel sheet** you can send to family on **WhatsApp**.
 > Next time, it shows you **only what's new**.
+
+> [!TIP]
+> 🗣️ **Talk in your own language.** Telugu, Hindi, Tamil, Kannada, Malayalam, Marathi, Bengali,
+> Gujarati, Punjabi, Urdu, English — or a mix like Hinglish. Muse answers in the same language,
+> and reads profiles, chats and call notes in other languages too.
 
 > [!TIP]
 > 🟢 **New here?** Read [START-HERE](skills/matrimony_match_scout/START-HERE.md) first — 2 minutes, plain words, with a zero-risk demo on made-up profiles.
@@ -29,6 +35,8 @@
 | 🟠 | [How your results arrive](#-how-your-results-arrive) | Chat, Excel, WhatsApp |
 | 🔴 | [How matches are scored](#-how-matches-are-scored) | Dealbreakers, points, red flags, unknowns |
 | 🟤 | [Memory](#-memory--never-the-same-profile-twice) | Why you never see anyone twice |
+| 📞 | [After a call](#-after-a-call--summaries-with-consent) | Call summaries, green and red flags — and the consent rules |
+| 🗣️ | [Your language](#-talk-in-your-own-language) | Talk to Muse in Telugu, Hindi, Tamil, Hinglish… |
 | ⚪ | [Things you can say](#-things-you-can-say) | Plain-English requests |
 | 🛡️ | [Privacy & safety](#-privacy--safety) | What it never does |
 | ❓ | [Questions & fixes](#-questions--fixes) | Google sign-in, logouts, slow runs |
@@ -46,6 +54,8 @@
 | 💬 | **WhatsApp, if you want** | Muse asks *"Want me to send this to WhatsApp?"* and sends the shortlist + Excel sheet only after you approve |
 | 🧠 | **Memory** | Nobody is shown twice. A profile returns only if it changed — marked **Updated** with what changed |
 | ✏️ | **Change your mind any time** | *"change my age range to 26 to 30"* re-scores everyone already read — no browsing again |
+| 📞 | **Call summaries** | Tell Muse how a call went (or send a recording, **only if they agreed to be recorded**) and get a summary with green and red flags |
+| 🗣️ | **Your language** | Talk in Telugu, Hindi, Tamil, Hinglish or English — Muse answers in the same |
 | 🛡️ | **Read-only** | Muse never sends, accepts, declines or shortlists anything on the site without your OK |
 
 Example of what Muse shows you (made-up people):
@@ -70,6 +80,9 @@ NEED YOUR ATTENTION (3):
 
 The attached Excel sheet and full report have every profile in detail.
 📎 report.xlsx   📎 report.md
+Tip: after a call with someone on this list, tell me how it went — or, only if they
+agreed to be recorded, send me the recording — and I'll add a call summary with
+green and red flags. Recording without everyone's consent is illegal in many places.
 Want me to send this to WhatsApp?
 ```
 
@@ -81,7 +94,7 @@ Want me to send this to WhatsApp?
 
 ## 🔵 Install in Muse (2 minutes)
 
-1. 📥 Download the skill: **[matrimony_match_scout-muse-v0.3.4.zip](releases/matrimony_match_scout-muse-v0.3.4.zip)**
+1. 📥 Download the skill: **[matrimony_match_scout-muse-v0.3.5.zip](releases/matrimony_match_scout-muse-v0.3.5.zip)**
 2. 📎 Open **Muse**, start a chat, **attach the zip**, and say **"Install this skill for me"**
 3. 💬 Start a **new** chat and say **"Run matrimony scout"**
 
@@ -233,6 +246,63 @@ Every profile goes through four steps, always in this order. The same profile an
 
 ---
 
+## 📞 After a call — summaries (with consent)
+
+After you talk to someone on your list, Muse can add a **short call summary** to
+their profile: what you talked about, 🟢 **green flags**, 🔴 **red flags**,
+promises made ("will share horoscope Sunday"), anything that **contradicts their
+profile**, and **patterns** across calls and chats. Muse suggests this after
+every report.
+
+> [!CAUTION]
+> 🔴 **Consent and the law — read this first.**
+> - **Recording a call without the other person's consent is illegal in many places.** In
+>   **California**, every person on the call must agree — even when you are on the call yourself
+>   (California Penal Code §§ 632 and 632.7). Breaking it can mean fines and even jail time.
+> - Rules differ by country and state (including in India). **Always ask before you record**,
+>   and check the rules where you and the other person are. This is not legal advice.
+> - **If they say no, don't record.** Use the notes option below instead — it needs no consent,
+>   because it's only your own words.
+> - Muse **never listens to a live call.** If you send a recording, Muse first asks
+>   *"Did they agree to be recorded?"* and won't use it unless you say yes.
+
+| Option | 🟢 / 🟡 | How |
+|---|---|---|
+| **1. Notes after the call** (recommended) | 🟢 no consent needed | Right after the call, tell Muse in your own words — typed or a voice note: *"she asked about my job twice, wouldn't say where she lives…"* |
+| **2. A recording** | 🟡 only with their consent | Ask at the start: *"Is it okay if I record this so I remember?"* Then record and send the recording or its transcript to Muse |
+
+**Recording on an iPhone** (iOS 18.1 or later, iPhone XR or newer, some regions):
+1. Ask the other person and get a clear **yes**.
+2. During the call, tap **More → Call Recording**. Both of you hear an announcement that the call is being recorded.
+3. When you hang up, the recording and a transcript are saved in **Notes → Call Recordings**.
+4. Share the transcript or audio into your Muse chat and say *"analyse my call with Asha"*.
+
+WhatsApp calls can't be recorded this way. With their agreement, switch to a normal phone call,
+or record on a second device with the call on speaker. On Android, some phones have call
+recording in the Phone app — it depends on the model and country.
+
+| Muse always | Muse never |
+|---|---|
+| 🟢 keeps only a short summary (600 characters at most) | 🔴 stores the recording or a transcript — it deletes them after summarising |
+| 🟢 bases flags on what was actually said, with a few words of evidence | 🔴 judges voice, accent or tone, or does "lie detection" |
+| 🟢 adds call red flags to the score (they cap it at 40) and to *Need your attention* | 🔴 gives psychological or medical labels |
+
+---
+
+## 🗣️ Talk in your own language
+
+Talk to Muse in **your own language** — **Telugu, Hindi, Tamil, Kannada, Malayalam,
+Marathi, Bengali, Gujarati, Punjabi, Urdu, English**, or a mix like **Hinglish**.
+
+| | |
+|---|---|
+| 🟢 | Muse answers in the language you use, and switches when you switch |
+| 🟢 | The five questions, your summary, the WhatsApp message and call summaries come in your language |
+| 🟢 | Profiles, chats and call notes in other languages are fine — Muse reads them |
+| 🟡 | The attached Excel sheet and full report keep **English** column names and headings |
+
+---
+
 ## ⚪ Things you can say
 
 | To… | Say |
@@ -246,7 +316,11 @@ Every profile goes through four steps, always in this order. The same profile an
 | Check | *"check status"*, *"what did you show me before"* |
 | Files | attach biodata PDFs, Word files, screenshots, chat exports or broker spreadsheets and say *"read my files"* |
 | Privacy | *"how do you read my data?"*, *"delete all my scout data"* |
+| After a call | *"here are my notes from the call with Asha"*, or send a recording **(only with their consent)** |
 | Try it | *"show me a matrimony scout demo"* |
+
+> [!TIP]
+> 🗣️ These are just examples — say the same things in your own language.
 
 ---
 
@@ -259,6 +333,7 @@ Every profile goes through four steps, always in this order. The same profile an
 > - ❌ copy your conversations (chats become a one-line summary)
 > - ❌ store phone numbers or email addresses from profiles or spreadsheets
 > - ❌ use face recognition or judge photos or looks
+> - ❌ listen to a live call, use a recording the other person didn't agree to, or keep any recording or transcript
 > - ❌ upload your data anywhere, or browse fast — one profile at a time, small caps
 
 | | Where your data lives |
@@ -299,7 +374,7 @@ skills/matrimony_match_scout/
 │                         timing (estimates), file_intake
 ├── templates/          ← every interests setting, with defaults
 ├── examples/           ← fictional profiles for the demo
-└── tests/              ← 63 tests, fictional data only
+└── tests/              ← 64 tests, fictional data only
 ```
 
 ```bash

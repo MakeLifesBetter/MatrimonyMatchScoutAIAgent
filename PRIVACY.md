@@ -31,6 +31,15 @@ You never need to open it - reports come to you as chat attachments:
 - Never uploads your data anywhere, and never sends a report to anyone unless
   you approve the exact message and who it goes to
 
+## Calls (only if you send something)
+Muse never listens to your calls. If you send notes about a call, it keeps a
+short summary. If you send a recording, Muse first asks whether the other
+person agreed to be recorded and uses it only if they did; it keeps only a
+short summary (600 characters at most) and deletes the audio and any
+transcript. Recording a call without everyone's consent is illegal in many
+places - in California every party must agree (Cal. Penal Code §§ 632, 632.7).
+This is not legal advice; check the rules where you and the other person are.
+
 ## WhatsApp (only if you ask)
 If you ask Muse to send your shortlist to WhatsApp, it uses the WhatsApp
 connection you set up in Muse. You see the exact message, the attached Excel

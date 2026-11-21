@@ -354,6 +354,34 @@ class ScoutStore:
         self._atomic_write_json(self.profiles_path, profiles)
         return rec, event
 
+    CALL_FIELDS = {"date": str, "summary": str, "green_flags": list, "red_flags": list,
+                   "promises": list, "contradictions": list, "topics": list}
+    CALL_CONSENT = ("notes-only", "recorded-with-consent")
+    MAX_CALL_SUMMARY = 600
+
+    def add_call(self, profile_id, call, consent):
+        """Save a SHORT call summary to a profile. No transcripts or audio, ever.
+        consent: 'notes-only' (the user's own account) or 'recorded-with-consent'."""
+        if consent not in self.CALL_CONSENT:
+            raise ValueError("A call can only be saved as 'notes-only' or 'recorded-with-consent'.")
+        extra = set(call) - set(self.CALL_FIELDS)
+        if extra:
+            raise ValueError("Only a short summary can be saved - not " + ", ".join(sorted(extra)) +
+                             ". Never store transcripts or audio.")
+        if len(str(call.get("summary") or "")) > self.MAX_CALL_SUMMARY:
+            raise ValueError(f"The call summary must be {self.MAX_CALL_SUMMARY} characters or "
+                             "fewer - summarise it, do not copy the conversation.")
+        rec = self.load_profiles()[profile_id]  # KeyError if unknown
+        clean = {k: (call.get(k) if isinstance(call.get(k), t) else ([] if t is list else None))
+                 for k, t in self.CALL_FIELDS.items()}
+        for k in ("green_flags", "red_flags", "promises", "contradictions", "topics"):
+            clean[k] = [str(x)[:120] for x in clean[k]][:8]
+        clean["consent"] = consent
+        clean["saved_at"] = now_iso()
+        data = deepcopy(rec["data"])
+        data["calls"] = (data.get("calls") or []) + [clean]
+        return self.upsert_profile(data, source="call")
+
     def mark_unavailable(self, profile_id):
         profiles = self.load_profiles()
         if profile_id in profiles:

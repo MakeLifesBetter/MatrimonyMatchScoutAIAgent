@@ -18,6 +18,9 @@ scoring and reports deterministic. Never show the JSON to the user.
   scout.py --data-dir D seen URL_OR_ID ...      (already read? when? - pick "the next 5")
   scout.py --data-dir D mark-unavailable ID     (deleted / hidden on the site)
   scout.py --data-dir D forget ID               (delete that record)
+  scout.py --data-dir D add-call ID FILE.json --consent notes-only|recorded-with-consent
+                 (short call summary only: date, summary, green_flags, red_flags,
+                  promises, contradictions, topics - never a transcript or audio)
   scout.py --data-dir D delete-all --confirm    (delete ALL Scout data - only after the person says yes)
   scout.py --data-dir D extract FILE.txt [--url URL]
   scout.py --data-dir D read-files FOLDER
@@ -167,6 +170,13 @@ def internal(store, args):
         out = {"profile_id": rest[0], "available": False}
     elif cmd == "forget":
         out = {"profile_id": rest[0], "forgotten": store.forget_profile(rest[0])}
+    elif cmd == "add-call":
+        consent = _opt(rest, "--consent")
+        call = json.loads(Path(rest[1]).read_text(encoding="utf-8"))
+        _, ev = store.add_call(rest[0], call, consent)
+        out = {"profile_id": rest[0], "saved": True, "event": ev,
+               "next": "Delete the recording and any transcript now; only this summary is kept.",
+               "rescore": pipeline.rescore(store)}
     elif cmd == "delete-all":
         if "--confirm" not in rest:
             out = {"deleted": False, "say": "Ask the person first; then run delete-all --confirm."}

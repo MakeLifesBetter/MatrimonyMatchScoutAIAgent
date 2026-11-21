@@ -59,6 +59,13 @@ Report) and the full report attached right there in the chat. Then Muse asks:
 asks, pick who it goes to (yourself or family), check the message — and it is
 sent only when you say "send".
 
+## Talk in your own language
+You can talk to Muse in **your own language** — Telugu, Hindi, Tamil, Kannada,
+Malayalam, Marathi, Bengali, Gujarati, Punjabi, Urdu, English, or a mix like
+Hinglish. Muse answers in the same language, and it can read profiles, chats and
+call notes in other languages too. (The attached Excel sheet keeps English
+column names.)
+
 ## Things you can say
 "run matrimony scout" · "read 10 this time" · "read the next 5" · "how much is left?" ·
 "give me the report" · "check status" · "how do you read my data?" ·
@@ -68,6 +75,13 @@ sent only when you say "send".
 "what did you show me before" · "read my files" · "refine my criteria"
 
 There are no commands to learn — say it your way.
+
+## After a call (optional)
+Tell Muse how a call went, in your own words, and it adds a short call summary
+with green and red flags to that person. You can also send a recording — **but
+only if the other person agreed to be recorded.** Recording a call without
+everyone's consent is illegal in many places, including California. Muse keeps
+only the short summary and deletes the recording.
 
 ## What stays private
 - The Scout keeps its notes in its own private folder in your Muse workspace.

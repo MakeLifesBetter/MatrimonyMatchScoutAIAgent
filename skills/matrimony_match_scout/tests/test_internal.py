@@ -109,6 +109,47 @@ class InternalActionTests(unittest.TestCase):
         self.assertFalse(act(other, "delete-all", "--confirm")["deleted"])
         self.assertTrue((other / "my_photos.txt").exists())
 
+    def test_call_summaries_with_consent_rules(self):
+        d = tmpdir()
+        (d / "c.json").write_text(json.dumps({"age_min": 25, "age_max": 30}))
+        act(d, "save-interests", str(d / "c.json"))
+        (d / "p.json").write_text(json.dumps([person("C1", name="Call Test")]))
+        act(d, "ingest", str(d / "p.json"))
+        self.assertEqual(act(d, "report")["status"], "ok")
+        call = {"date": "2026-11-21", "summary": "Talked about work and family; warm and open.",
+                "green_flags": ["answered every question openly"],
+                "red_flags": ["asked to borrow money for a visa fee"],
+                "promises": ["will share horoscope on Sunday"],
+                "contradictions": ["said she lives in Austin, profile says Seattle"]}
+        (d / "call.json").write_text(json.dumps(call))
+        # consent is required, transcripts and audio are refused
+        r = subprocess.run([sys.executable, SCOUT, "--data-dir", str(d), "add-call", "C1",
+                            str(d / "call.json")], capture_output=True, text=True)
+        self.assertEqual(json.loads(r.stdout)["error"], "ValueError")
+        (d / "bad.json").write_text(json.dumps(dict(call, transcript="full text of the call")))
+        r = subprocess.run([sys.executable, SCOUT, "--data-dir", str(d), "add-call", "C1",
+                            str(d / "bad.json"), "--consent", "notes-only"], capture_output=True, text=True)
+        self.assertIn("Never store transcripts", json.loads(r.stdout)["message"])
+        (d / "long.json").write_text(json.dumps(dict(call, summary="x" * 601)))
+        r = subprocess.run([sys.executable, SCOUT, "--data-dir", str(d), "add-call", "C1",
+                            str(d / "long.json"), "--consent", "notes-only"], capture_output=True, text=True)
+        self.assertIn("600 characters", json.loads(r.stdout)["message"])
+        out = act(d, "add-call", "C1", str(d / "call.json"), "--consent", "recorded-with-consent")
+        self.assertIn("Delete the recording", out["next"])
+        ex = act(d, "explain", "C1")
+        self.assertLessEqual(ex["score"], 40)                      # call red flag caps the score
+        self.assertTrue(any("on a call: asked to borrow" in f for f in ex["red_flags_found"]))
+        self.assertTrue(any("Call contradicts profile" in x for x in ex["risks"]))
+        rep = act(d, "report")                                     # the new call makes it Updated
+        self.assertEqual((rep["status"], rep["updated"]), ("ok", 1))
+        self.assertIn("Call Test: red flag - on a call: asked to borrow money", rep["digest"])
+        md = Path(rep["markdown"]).read_text()                     # full detail in the report
+        self.assertIn("1 new call summary", md)
+        self.assertIn("promised on your last call - will share horoscope on Sunday", md)
+        self.assertIn("consent", rep["call_tip"])
+        self.assertIn("California", rep["call_tip"])
+        self.assertIn("Calls: 1 call(s) - last 2026-11-21", md)
+
     def test_chat_checkpoint_resume(self):
         d = tmpdir()
         (d / "cp.json").write_text(json.dumps({"phase": "SCAN", "run_id": "chat-1",

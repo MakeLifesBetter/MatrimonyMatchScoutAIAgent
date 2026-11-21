@@ -15,4 +15,4 @@ python3 -m unittest discover -s skills/matrimony_match_scout/tests -v
 | `test_reports.py` | top 3, Markdown, Excel's 3 sheets, empty before any scan, nothing new, updated rows, re-score with no network |
 | `test_file_intake.py` | biodata txt/docx/pdf, broker CSV/XLSX, chat export, saved page text, screenshots |
 | `test_timing.py` | estimate before a scan, quick-batch offer, time left from the measured pace, updates every 5 profiles |
-| `test_internal.py` | the JSON actions Muse calls, end to end (incl. explain, seen, mark-unavailable, forget, run size) |
+| `test_internal.py` | the JSON actions Muse calls, end to end (incl. explain, seen, mark-unavailable, forget, run size, call summaries with consent rules) |

@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.3.5 — 2026-11-20
+- Call summaries: new `add-call <id> <file> --consent notes-only|recorded-with-consent`
+  saves a short summary (600 characters max) with green flags, red flags,
+  promises, contradictions and topics; transcripts and audio are refused.
+  Call red flags cap the score at 40 and show in "Need your attention"; a new
+  call marks the profile Updated; Excel and the full report show calls
+- Consent rules for Muse (references/call_notes.md): never listen live; ask
+  whether the other person agreed before using a recording; delete audio and
+  transcripts; no voice, tone or lie-detection judgements
+- After every report Muse adds a call tip that includes the consent warning
+  (`call_tip`)
+- Languages: Muse talks in the person's language (Telugu, Hindi, Tamil, ...,
+  Hinglish) and reads profiles, chats and calls in other languages
+- README: new "After a call" section with the compliance warning (California
+  Penal Code 632 / 632.7) and iPhone recording steps, and "Talk in your own
+  language"; START-HERE and PRIVACY updated
+- 64 tests
+
 ## 0.3.4 — 2026-11-20
 - Excel is the main deliverable: every report attaches the Excel sheet first
   (`report` returns `excel`), with the full report alongside

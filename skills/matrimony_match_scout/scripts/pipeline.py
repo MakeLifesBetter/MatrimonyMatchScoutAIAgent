@@ -109,6 +109,10 @@ def change_lines(diff):
     chat_changed = False
     for d in diff:
         f = d["field"]
+        if f == "calls":
+            n = len(d.get("to") or []) - len(d.get("from") or [])
+            lines.append(f"{max(n, 1)} new call summary" + ("" if n <= 1 else "s"))
+            continue
         if f.startswith("chat."):
             chat_changed = True
             continue
@@ -122,6 +126,22 @@ def change_lines(diff):
 
 
 MATCH_MIN_SCORE = 60
+CALL_TIP = ("Tip: after a call with someone on this list, tell me how it went in your own words - or, "
+            "only if they agreed to be recorded, send me the recording - and I will add a call summary "
+            "with green and red flags. Recording a call without everyone's consent is illegal in many "
+            "places, including California, so always ask first.")
+
+
+def calls_text(calls):
+    if not calls:
+        return ""
+    last = calls[-1]
+    bits = [f"{len(calls)} call(s)"]
+    if last.get("date"):
+        bits.append(f"last {last['date']}")
+    if last.get("summary"):
+        bits.append(last["summary"][:160])
+    return " - ".join(bits)
 
 
 def attention_items(d, res, status, diff):
@@ -132,6 +152,12 @@ def attention_items(d, res, status, diff):
         out.append("red flag - " + res["red_flags_found"][0].split(" (mentions")[0])
     for c in chat.get("contradictions") or []:
         out.append("chat contradicts profile - " + c)
+    for call in d.get("calls") or []:
+        for c in call.get("contradictions") or []:
+            out.append("call contradicts profile - " + c)
+    last_call = (d.get("calls") or [None])[-1]
+    if last_call and last_call.get("promises"):
+        out.append("promised on your last call - " + last_call["promises"][0])
     if chat.get("exists") and chat.get("last_message_by") == "them":
         q = (chat.get("open_questions") or [""])[0]
         out.append("waiting for your reply" + (f" ({q})" if q else ""))
@@ -162,6 +188,7 @@ def _row(rec, res, status, diff):
                 "horoscope_text": "; ".join(f"{k.replace('_', ' ')} {v}" for k, v in horo.items()),
                 "sources": ", ".join(rec.get("sources") or []),
                 "red_flags": res["red_flags_found"],
+                "calls_text": calls_text(d.get("calls")),
                 "attention": attention_items(d, res, status, diff),
                 "changes": change_lines(diff) if status == "Updated" else [],
                 "change_rows": diff if status == "Updated" else [],
@@ -253,7 +280,7 @@ def make_report(store, mark_shown=True):
              "further):\n" + out["digest"])
     return {"status": "ok", "report_id": report_id, "rows": rows, "excluded": tally,
             "attach": [out["excel"], out["markdown"]], "excel": out["excel"], "share_text": share,
-            "whatsapp_text": whatsapp_text(rows),
+            "whatsapp_text": whatsapp_text(rows), "call_tip": CALL_TIP,
             "new": sum(r["status"] == "New" for r in rows),
             "updated": sum(r["status"] == "Updated" for r in rows), **out}
 

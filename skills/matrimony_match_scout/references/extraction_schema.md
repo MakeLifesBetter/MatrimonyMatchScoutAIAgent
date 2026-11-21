@@ -41,6 +41,9 @@ record anything about photos.
     "contradictions": ["chat says Austin, profile says Seattle"],
     "red_flags": ["asks for money (mentions 'gift card')"]
   },
+  "calls": [{"date": "2026-11-21", "summary": "short, own words", "green_flags": [],
+             "red_flags": [], "promises": [], "contradictions": [], "topics": [],
+             "consent": "notes-only | recorded-with-consent"}],
   "source": "chats | interests_received | matches | search | file | page_capture",
   "source_detail": "page URL, thread, or file name and row",
   "qualitative": 14,

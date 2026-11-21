@@ -32,7 +32,8 @@ DETAIL_COLUMNS = [
     ("smoking", "Smoking"), ("relocate", "Open to relocate"), ("settle_plans", "Settle plans"),
     ("horoscope_text", "Horoscope"), ("family_summary", "Family"),
     ("about_me", "About me"), ("partner_preference_text", "Partner preference"),
-    ("chat_status", "Chat"), ("sources", "Found in"), ("profile_url", "Profile link"),
+    ("chat_status", "Chat"), ("calls_text", "Calls (summary)"), ("sources", "Found in"),
+    ("profile_url", "Profile link"),
 ]
 
 
@@ -163,6 +164,7 @@ def build_markdown(rows, path, excluded=None, generated=None, criteria_summary="
                   f"- Risky or unknown: {_join(r['risks']) or 'nothing spotted'}",
                   f"- Needs attention: {_join(r.get('attention')) or 'no'}",
                   f"- Chat: {r['chat_status']}",
+                  f"- Calls: {r.get('calls_text') or 'none noted'}",
                   f"- About (their words, trimmed): {(r.get('about_me') or 'not shown')[:300]}", ""]
     if upd:
         L += ["## Updated since last report", ""]

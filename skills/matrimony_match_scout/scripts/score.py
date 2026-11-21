@@ -364,7 +364,13 @@ def score_profile(profile, criteria, qualitative=None, judgement=None):
     total = min(100, weighted + qualitative)
 
     # ---------- 4. red flags cap ----------
+    calls = p.get("calls") or []
     found = list(chat.get("red_flags") or [])
+    for call in calls:
+        for f in call.get("red_flags") or []:
+            f = f"on a call: {f}"
+            if f not in found:
+                found.append(f)
     for f in detect_red_flags([p.get("about_me"), p.get("partner_preference_text")],
                               c.get("red_flags")):
         if f not in found:
@@ -372,6 +378,9 @@ def score_profile(profile, criteria, qualitative=None, judgement=None):
     if found:
         total = min(total, RED_FLAG_CAP)
         risks.append("Red flag: " + "; ".join(found))
+    for call in calls:
+        for x in call.get("contradictions") or []:
+            risks.append("Call contradicts profile: " + x)
     for x in chat.get("contradictions") or []:
         risks.append("Chat contradicts profile: " + x)
     for u in unknowns:
@@ -395,6 +404,9 @@ def score_profile(profile, criteria, qualitative=None, judgement=None):
         next_step = "ask about the unknowns before deciding"
     else:
         next_step = "send interest (only after you say so)"
+    call_greens = [g for call in calls for g in (call.get("green_flags") or [])]
+    if call_greens and not excluded:
+        why.append("On calls: " + "; ".join(dict.fromkeys(call_greens))[:120])
     clear = [r for r in (c.get("dealbreakers") or []) if _dealbreaker(r, p)[0] == "pass"]
     if clear and not excluded:
         why.append("Clear of your dealbreaker" + ("s" if len(clear) > 1 else "") + ": " + ", ".join(clear))

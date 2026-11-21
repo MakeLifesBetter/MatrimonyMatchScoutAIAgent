@@ -43,7 +43,8 @@ If no AI judgement is given for a profile, `score.py` applies the same anchors
 with simple rules and labels it "Rule-based reading".
 
 ## 4. Red-flag cap
-Any red flag from the user's list — found in the chat or in their profile text —
+Any red flag — from the user's list found in the chat or profile text, or noted
+in a call summary (`calls[].red_flags`) —
 caps the total at **40** and is named in the risks with a few words of evidence.
 
 ## Match vs. needs attention (the chat summary)
