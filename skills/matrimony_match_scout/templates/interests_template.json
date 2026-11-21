@@ -30,7 +30,7 @@
   "green_flags": [],
   "good_match_words": [],
   "excluded_profile_ids": [],
-  "max_profiles_per_run": 20,
+  "max_profiles_per_run": null,
   "sources": [
     "chats",
     "interests_received",

@@ -36,7 +36,7 @@ come off your places?"). Every question is skippable.
 | Good match | In a few words, what does a very good match care about? | `good_match_words` (list) |
 | More dealbreakers | Anything else that is a hard no? | `dealbreakers` |
 | Height | Height range, if it matters? | `height_min_cm`, `height_max_cm` |
-| Scan size | How many profiles per scan? (max 50) | `max_profiles_per_run` |
+| Scan size | How many profiles per run? (default 5; up to 10; more only if they ask, max 50) | `max_profiles_per_run` |
 
 Finish with the full read-back and save only after the user says it is right.
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.1 — 2026-11-20
+- Profiles per run: 5 by default, at most 10 per run; more only when the
+  person asks (`scan-start --cap N --user-asked`, or a number they saved as
+  max_profiles_per_run), and never more than 50
+- Muse offers "up to 10" or "the next 5" instead of long runs; docs updated
+- 58 tests
+
 ## 0.3.0 — 2026-11-20
 - Muse only: the terminal (CLI) route is removed - the conversational
   terminal, the Playwright scanner and their tests are gone. scout.py is now

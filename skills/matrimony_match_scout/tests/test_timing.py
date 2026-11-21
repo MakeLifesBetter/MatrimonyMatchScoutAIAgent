@@ -11,14 +11,24 @@ class TimingTests(unittest.TestCase):
     def setUp(self):
         self.s = ScoutStore(tmpdir())
 
-    def test_estimate_up_front_and_quick_batch_offer(self):
-        r = timing.start(self.s, 20)
+    def test_default_is_5_and_offers_up_to_10(self):
+        r = timing.start(self.s)
+        self.assertEqual(r["cap"], 5)
         lo, hi = r["estimate_minutes"]
-        self.assertTrue(10 <= lo < hi <= 30, (lo, hi))
-        self.assertIn("will take about", r["say"])
-        self.assertIn("quick first batch of 5", r["say"])
-        self.assertLess(r["quick_batch_minutes"][1], hi)
-        self.assertNotIn("quick first batch", timing.start(self.s, 5)["say"])
+        self.assertTrue(3 <= lo < hi <= 12, (lo, hi))
+        self.assertIn("Reading 5 profiles will take about", r["say"])
+        self.assertIn("up to 10 in one run", r["say"])
+
+    def test_max_10_unless_the_person_asks(self):
+        r = timing.start(self.s, 25)
+        self.assertEqual(r["cap"], 10)
+        self.assertTrue(r["limited"])
+        self.assertIn("unless you ask me for more", r["say"])
+        self.assertEqual(timing.start(self.s, 8)["cap"], 8)
+        self.assertEqual(timing.start(self.s, 25, user_asked=True)["cap"], 25)
+        hard = timing.start(self.s, 500, user_asked=True)
+        self.assertEqual(hard["cap"], 50)
+        self.assertIn("50 is the most", hard["say"])
 
     def test_time_left_switches_to_measured_pace(self):
         t = [1000.0]
@@ -45,7 +55,7 @@ class TimingTests(unittest.TestCase):
         self.assertIsNone(self.s.state().get("progress"))
 
     def test_user_told_every_five_profiles(self):
-        timing.start(self.s, 12)
+        timing.start(self.s, 12, user_asked=True)
         told = [timing.tick(self.s)["tell_user_now"] for _ in range(12)]
         self.assertEqual([i + 1 for i, x in enumerate(told) if x], [1, 5, 10, 12])
 

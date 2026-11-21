@@ -7,7 +7,8 @@ scoring and reports deterministic. Never show the JSON to the user.
   scout.py --data-dir D status | interests | history | rescore | demo
   scout.py --data-dir D save-interests FILE.json [--confirm-hand-edit]
   scout.py --data-dir D hand-edit accept|revert
-  scout.py --data-dir D scan-start --cap N [--list-pages K] [--no-calibration]
+  scout.py --data-dir D scan-start [--cap N] [--user-asked] [--list-pages K] [--no-calibration]
+                 (default 5; max 10 per run; above 10 only with --user-asked, max 50)
   scout.py --data-dir D ingest FILE.json        (schema records; returns progress + time left)
   scout.py --data-dir D scan-progress | scan-end
   scout.py --data-dir D judge FILE.json         ([{profile_id, qualitative, text}])
@@ -99,8 +100,13 @@ def internal(store, args):
         if prog:
             out["progress"] = prog
     elif cmd == "scan-start":
-        out = timing.start(store, max(1, min(50, _opt(rest, "--cap", 20, int))),
-                           _opt(rest, "--list-pages", 4, int), "--no-calibration" not in rest)
+        saved = store.criteria().get("max_profiles_per_run")
+        cap = _opt(rest, "--cap", None, int)
+        user_asked = "--user-asked" in rest
+        if cap is None and saved:
+            cap, user_asked = int(saved), True  # a number the person saved themselves
+        out = timing.start(store, cap, _opt(rest, "--list-pages", 4, int),
+                           "--no-calibration" not in rest, user_asked=user_asked)
     elif cmd == "scan-progress":
         p = store.state().get("progress")
         out = timing.tick(store, 0) if p else {"say": "No scan is running."}

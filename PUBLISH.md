@@ -24,7 +24,7 @@ git push -u origin main
 ## After the first push
 1. Replace `<your-github-username>` in README.md (Claude Code section).
 2. Build the release zips: `python3 tools/build_release.py`
-3. Create a GitHub Release tagged `v0.3.0` and attach both zips from
+3. Create a GitHub Release tagged `v0.3.1` and attach both zips from
    `dist/` (the Muse zip and the Claude zip). The README install steps
    link to the latest release.
 4. Licence is settled: all rights reserved (see LICENSING.md). Do NOT

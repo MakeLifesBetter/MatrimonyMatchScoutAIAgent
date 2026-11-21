@@ -1,8 +1,8 @@
 # Matrimony Match Scout — a skill for Muse
 
-![version](https://img.shields.io/badge/version-v0.3.0-blue)
+![version](https://img.shields.io/badge/version-v0.3.1-blue)
 ![works in](https://img.shields.io/badge/works%20in-Muse-7A2E4D)
-![tests](https://img.shields.io/badge/tests-57%20passing-brightgreen)
+![tests](https://img.shields.io/badge/tests-58%20passing-brightgreen)
 ![privacy](https://img.shields.io/badge/data-stays%20on%20your%20laptop-purple)
 ![license](https://img.shields.io/badge/license-All%20Rights%20Reserved-red)
 
@@ -24,7 +24,7 @@
 
 ## 🚀 Install in Muse (2 minutes)
 
-1. Download the [skill zip](releases/matrimony_match_scout-muse-v0.3.0.zip)
+1. Download the [skill zip](releases/matrimony_match_scout-muse-v0.3.1.zip)
 2. Open Muse, start a chat, **attach the zip**, and say **"Install this skill for me"**
 3. Start a **new** chat and say **"Run matrimony scout"**
 
@@ -32,8 +32,9 @@
 
 Muse reads your profiles the way a careful person would — one at a time,
 opening each page and reading it. **That takes a while: about 30–60 seconds
-per profile, so 20 profiles is roughly 15–25 minutes.** Muse tells you the
-estimate before it starts and the time left as it goes.
+per profile.** So each run reads **5 profiles by default (about 5–10 minutes)**
+and **at most 10 (about 8–15 minutes)** — say "read 20 this time" if you want
+more. Muse tells you the estimate before it starts and the time left as it goes.
 
 You don't need to sit and watch:
 
@@ -46,8 +47,8 @@ You don't need to sit and watch:
 5. **Come back later.** Your top 3, the report and the Excel sheet will be waiting.
 
 > [!NOTE]
-> First time? Say **"just do 5 first"** — about 5–10 minutes — to see what you
-> get before a longer run. If anything needs you (the site logs you out or
+> Lots of profiles? Run the Scout a few times — say **"read the next 5"** after
+> each shortlist. Short runs give you results sooner. If anything needs you (the site logs you out or
 > shows a check), Muse saves its place and leaves you a one-line note; say
 > **"carry on"** when you're back.
 
@@ -67,7 +68,7 @@ flowchart LR
 3. **Any red flag you listed** (like "asks for money") caps the score.
 
 **Things you can say:** "check status" · "how much is left?" · "give me the report" ·
-"change my age range to 26 to 30" · "pass on 2" · "interested in Asha" ·
+"read 10 this time" · "read the next 5" · "change my age range to 26 to 30" · "pass on 2" · "interested in Asha" ·
 "why is 1 ranked first" · "draft a reply to Asha" · "what did you show me before"
 
 ## 🔒 Privacy

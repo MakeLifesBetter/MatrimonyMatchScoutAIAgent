@@ -5,8 +5,10 @@ search) through a browser they logged into themselves, compares every
 profile with what they said they want, and gives a short ranked shortlist
 with a reason for each. Never shows the same profile twice. Read-only.
 
-Browsing in Muse is slow — roughly 30–60 seconds per profile — so a scan of
-20 profiles takes about 15–25 minutes. Always say how long it will take before
+Browsing in Muse is slow — roughly 30–60 seconds per profile. So each run reads
+**5 profiles by default (about 5–10 minutes)** and **at most 10 (about 8–15
+minutes)**. Go above 10 only when the person asks for more in this
+conversation, and never above 50. Always say how long it will take before
 starting, give the time left as you go, and let the person walk away: after the
 one-profile check, the scan must finish on its own with no more questions.
 
@@ -23,7 +25,8 @@ Never show raw JSON, file paths or tool names to the user unless they ask.
 - The user logs in themselves. Never ask for, type, read, or store a password,
   one-time code, or CAPTCHA answer.
 - Human pace: one profile at a time, several seconds apart, first two list
-  pages per source, per-run cap the user sets (default 20, never more than 50).
+  pages per source. Per run: 5 profiles by default, at most 10 — more only if
+  the person explicitly asks (then pass `--user-asked`), never more than 50.
   No bulk scraping scripts.
 - No face recognition, no photo analysis, no attractiveness scoring. Photos are
   never an input to anything.
@@ -81,12 +84,20 @@ only after the user confirms. Remember the calibration in the checkpoint.
 
 **Before you start, tell the person how long it will take.**
 1. Ask permission for each private source in plain words (chats first).
-   Default first run: chats + interests received, cap 20.
-2. Run `scan-start --cap <N> --list-pages <number of list pages you will open>`
-   and say its `say` line in your own words, for example: "Reading up to 20
-   profiles will take about 15–25 minutes. You don't need to watch — you can
-   close Muse or do something else and come back; your shortlist will be
-   waiting." If the cap is above 5, offer the quick first batch it suggests.
+   Default first run: chats + interests received.
+2. Decide the number of profiles:
+   - Nothing said → run `scan-start` with no `--cap` (5 profiles, or the number
+     the person saved as `max_profiles_per_run`).
+   - The person names a number up to 10 → `scan-start --cap <N>`.
+   - The person asks for more than 10 ("do 25", "read all my matches") →
+     `scan-start --cap <N> --user-asked`. Never add `--user-asked` on your own.
+   - "Always do 20" → also save `max_profiles_per_run: 20` in their interests.
+   Add `--list-pages <number of list pages you will open>`. Say its `say` line
+   in your own words, for example: "Reading 5 profiles will take about 5–10
+   minutes. You don't need to watch — you can close Muse or do something else
+   and come back; your shortlist will be waiting. Want more? I can do up to 10
+   in one run." If `limited` is true, tell them 10 is the most per run unless
+   they ask for more.
 3. Do the one-profile calibration (section 3) BEFORE the person walks away —
    it is the last question you ask until the scan is finished.
 
@@ -98,7 +109,7 @@ only after the user confirms. Remember the calibration in the checkpoint.
    profile, so a disconnect resumes instead of restarting.
 6. `ingest` returns `progress`. Whenever `progress.tell_user_now` is true
    (after the first profile, every 5 profiles, and at the end), post its `say`
-   line, for example "10 of 20 read — about 6 minutes left". The estimate
+   line, for example "5 of 10 read — about 4 minutes left". The estimate
    switches to the real measured pace after a few profiles.
 7. Never stop to ask a question mid-scan. Anything uncertain (an odd field, an
    unreadable profile) goes in the report as "unknown — please check" instead.
@@ -112,7 +123,8 @@ only after the user confirms. Remember the calibration in the checkpoint.
 9. Run `scan-end` (it gives the total time) and go straight to the report
    (section 7), so the shortlist is the first thing the person sees when they
    come back. Start that message with the time taken and the counts, e.g.
-   "Done — I read 20 profiles in 18 minutes. Here are your top 3:".
+   "Done — I read 10 profiles in 9 minutes. Here are your top 3:". Then offer
+   the next run: "Want me to read the next 5?"
 10. If the person comes back to a paused scan (`status` shows a checkpoint or
     `scan_in_progress`), offer to carry on, with a fresh `scan-start` estimate
     for what is left.
@@ -162,8 +174,9 @@ Memory rules are in [Persistence](references/persistence.md).
 
 ## Alternatives for better results
 
-- First time on a site? Offer the quick batch of 5 (about 5–10 minutes) so the
-  person sees results fast, then a bigger run they can leave unattended.
+- Big backlog? Several short runs of 5–10 beat one long one: results come
+  sooner, and the site sees gentle, person-like visits. Offer "the next 5"
+  after each report.
 - If a site blocks browsing, ask for biodata files or chat exports and score
   them through the same pipeline instead of ending the run.
 - With a large backlog, run chats only first, then widen to matches and search.

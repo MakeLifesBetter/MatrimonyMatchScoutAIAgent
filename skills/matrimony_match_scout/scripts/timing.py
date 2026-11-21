@@ -6,8 +6,15 @@ opening the page, reading it, extracting it and saving it. These are the
 STARTING estimates; once a few profiles are done, the real measured pace is
 used instead, so "time left" gets more accurate as the scan goes.
 
+  resolve_cap(requested, user_asked) -> how many profiles this run may read
   estimate(profiles, list_pages)  -> minutes (low, high) before starting
   start(store, cap, list_pages)   -> saves the start time, returns the estimate
+
+How many profiles per run:
+  - default 5 (a short run, about 5-10 minutes)
+  - at most 10 per run, unless the PERSON asks for more in this conversation
+    (or saved a bigger number themselves as max_profiles_per_run)
+  - never more than 50, even when asked
   tick(store, n)                  -> after each saved profile: read, left, time left
   finish(store)                   -> total time taken
 """
@@ -18,7 +25,9 @@ SECONDS_PER_PROFILE = (30, 60)    # open + read + extract + save, at a human pac
 SECONDS_PER_LIST_PAGE = (20, 40)  # inbox, interests received, matches, search
 SECONDS_CALIBRATION = (60, 120)   # the one-profile check with the user
 MEASURE_AFTER = 3                 # switch to the real pace after this many profiles
-QUICK_BATCH = 5
+DEFAULT_CAP = 5     # every run, unless the person picks another number
+RUN_MAX = 10        # the most per run without the person asking for more
+HARD_CAP = 50       # the most per run, ever
 
 
 def _mins(seconds):
@@ -39,17 +48,34 @@ def estimate(profiles, list_pages=4, calibration=True):
     return _mins(lo), _mins(hi)
 
 
-def start(store, cap, list_pages=4, calibration=True):
+def resolve_cap(requested=None, user_asked=False):
+    """-> (cap, note). Only the person can lift the run above 10, never above 50."""
+    if requested is None:
+        return DEFAULT_CAP, ""
+    requested = max(1, int(requested))
+    if requested <= RUN_MAX:
+        return requested, ""
+    if not user_asked:
+        return RUN_MAX, (f"I will read {RUN_MAX} this run - that is the most per run unless you "
+                         "ask me for more.")
+    if requested > HARD_CAP:
+        return HARD_CAP, f"{HARD_CAP} is the most I read in one run, to stay gentle on the site."
+    return requested, ""
+
+
+def start(store, cap=None, list_pages=4, calibration=True, user_asked=False):
+    cap, note = resolve_cap(cap, user_asked)
     lo, hi = estimate(cap, list_pages, calibration)
-    qlo, qhi = estimate(min(QUICK_BATCH, cap), list_pages, calibration)
     store.update_state(progress={"started": time.time(), "cap": cap, "read": 0,
                                  "first_profile_at": None, "estimate": [lo, hi]})
-    msg = (f"Reading up to {cap} profiles will take {fmt(lo, hi)}. You do not need to watch - "
-           "I will tell you the time left as I go, and you can say stop at any time.")
-    if cap > QUICK_BATCH:
-        msg += (f" Want a quick first batch of {QUICK_BATCH} instead ({fmt(qlo, qhi)})?")
-    return {"cap": cap, "estimate_minutes": [lo, hi], "quick_batch": QUICK_BATCH,
-            "quick_batch_minutes": [qlo, qhi], "say": msg}
+    msg = (note + " " if note else "") + (
+        f"Reading {cap} profile{'s' if cap != 1 else ''} will take {fmt(lo, hi)}. You do not "
+        "need to watch - I will tell you the time left as I go, and you can say stop at any time.")
+    if cap < RUN_MAX and not note:
+        msg += (f" Want more? I can do up to {RUN_MAX} in one run "
+                f"({fmt(*estimate(RUN_MAX, list_pages, calibration))}), or more if you ask.")
+    return {"cap": cap, "default_cap": DEFAULT_CAP, "run_max": RUN_MAX, "hard_cap": HARD_CAP,
+            "limited": bool(note), "estimate_minutes": [lo, hi], "say": msg.strip()}
 
 
 def tick(store, n=1):

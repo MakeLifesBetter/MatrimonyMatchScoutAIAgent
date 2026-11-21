@@ -14,11 +14,12 @@ with what changed.
 
 ## How long it takes — and why you can walk away
 Muse reads each profile carefully, one at a time, like a person would. That
-takes about **30–60 seconds per profile** (20 profiles ≈ 15–25 minutes). Muse
-tells you the estimate before it starts and the time left as it goes.
+takes about **30–60 seconds per profile**. So each run reads **5 profiles**
+(about 5–10 minutes) unless you ask for more — up to **10 per run** (about
+8–15 minutes). Want more than 10? Just say so, for example "read 20 this time".
+Muse tells you the estimate before it starts and the time left as it goes.
 So: answer the questions, log in, check one profile — then **leave or close the
 app and come back later**. Your shortlist will be waiting.
-First time? Say **"just do 5 first"** (about 5–10 minutes).
 
 ## The only 3 things you will ever be asked to do
 1. **Answer 5 short questions** — which site, who the search is for, the age
@@ -51,7 +52,7 @@ A short message like this (made-up people):
 Updated Since Last Report) you can share with family.
 
 ## Things you can say
-"run matrimony scout" · "just do 5 first" · "how much is left?" ·
+"run matrimony scout" · "read 10 this time" · "read the next 5" · "how much is left?" ·
 "give me the report" · "check status" · "how do you read my data?" ·
 "change my age range to 26 to 30" · "add Pune to my places" ·
 "my dealbreaker is smoking" · "pass on 2" · "interested in Asha" ·

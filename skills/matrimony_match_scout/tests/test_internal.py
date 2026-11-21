@@ -64,7 +64,13 @@ class InternalActionTests(unittest.TestCase):
         self.assertIn("Done - I read 1", act(d, "scan-end")["say"])
         self.assertNotIn("progress", act(d, "ingest", str(d / "p.json")))  # no scan running
         self.assertIn("Here are your", act(d, "demo")["digest"])
-        self.assertEqual(act(d, "scan-start", "--cap", "500")["cap"], 50)  # hard cap
+        self.assertEqual(act(d, "scan-start")["cap"], 5)                       # default
+        self.assertEqual(act(d, "scan-start", "--cap", "30")["cap"], 10)       # not asked
+        self.assertEqual(act(d, "scan-start", "--cap", "30", "--user-asked")["cap"], 30)
+        self.assertEqual(act(d, "scan-start", "--cap", "500", "--user-asked")["cap"], 50)
+        (d / "c.json").write_text(json.dumps({"max_profiles_per_run": 15}))   # saved by the person
+        act(d, "save-interests", str(d / "c.json"))
+        self.assertEqual(act(d, "scan-start")["cap"], 15)
 
     def test_chat_checkpoint_resume(self):
         d = tmpdir()
