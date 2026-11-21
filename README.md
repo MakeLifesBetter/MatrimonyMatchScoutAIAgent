@@ -61,7 +61,7 @@ reasons, the risks, an Excel sheet for family, and only what's new next time.**
 - **Your interests file is yours** — edit it by hand and Muse notices and asks before using the change.
 
 ### 📞 Calls
-- **Call summaries** — tell Muse how a call went, or send a recording **only if the other person agreed**, and get green flags, red flags, promises and contradictions.
+- **Call summaries** — tell Muse how a call went, or send a recording **only if the other person agreed**, and get green flags, red flags, promises, contradictions and a complete AI Analysis.
 - **Patterns over time** — compared with earlier calls and chats with the same person.
 
 ### 🟡 Time & control
