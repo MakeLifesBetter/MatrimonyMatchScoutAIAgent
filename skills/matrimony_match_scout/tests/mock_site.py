@@ -81,11 +81,19 @@ MATCHES = [["SH104", "SH106", "SH107"], ["SH108"]]
 SEARCH = ["SH101", "SH108"]
 
 
+ODD_NAV = {"on": False}  # labels the Scout cannot guess, like many real sites
+
+
 def page(title, body, nav=True):
-    navhtml = ("<nav><a href='/home'>Home</a> | <a href='/inbox'>Inbox</a> | "
-               "<a href='/interests/received'>Interests Received</a> | <a href='/matches'>My Matches</a> | "
-               "<a href='/search'>Search</a> | <a href='/my-profile'>My Profile</a> | "
-               "<a href='/logout'>Logout</a></nav>") if nav else ""
+    if ODD_NAV["on"]:
+        navhtml = ("<nav><a href='/home'>Home</a> | <a href='/inbox'>Connect</a> | "
+                   "<a href='/interests/received'>Lounge</a> | <a href='/matches'>Discover</a> | "
+                   "<a href='/search'>Explore</a></nav>") if nav else ""
+    else:
+        navhtml = ("<nav><a href='/home'>Home</a> | <a href='/inbox'>Inbox</a> | "
+                   "<a href='/interests/received'>Interests Received</a> | <a href='/matches'>My Matches</a> | "
+                   "<a href='/search'>Search</a> | <a href='/my-profile'>My Profile</a> | "
+                   "<a href='/logout'>Logout</a></nav>") if nav else ""
     return (f"<!doctype html><html><head><title>{html.escape(title)}</title></head><body>"
             f"{navhtml}<main>{body}</main><footer>Fictional demo site</footer></body></html>")
 
@@ -243,6 +251,7 @@ class MockSite:
         return self
 
     def stop(self):
+        ODD_NAV["on"] = False
         self.server.shutdown()
         self.server.server_close()
 

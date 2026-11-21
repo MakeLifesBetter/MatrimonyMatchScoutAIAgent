@@ -57,6 +57,9 @@ PROFILE_HREF = re.compile(
 THREAD_HREF = re.compile(
     r"/(chat|chats|message|messages|conversation|conversations|thread|inbox)/[A-Za-z0-9_-]{3,}|[?&](threadid|chatid)=",
     re.I)
+SITE_ID_HREF = re.compile(r"(?<![A-Za-z])(SH|BM|JS|TM|KM)\d{6,}", re.I)  # e.g. Shaadi-style IDs
+SOURCE_HINTS = {"chats": "Inbox or Chats", "interests_received": "Inbox > Received",
+                "matches": "Matches or My Matches", "search": "Search"}
 OWN_PROFILE = re.compile(r"my-?profile|edit|settings|logout|log-out|signout|upgrade|payment", re.I)
 BLOCK_WORDS = ("captcha", "unusual activity", "are you a robot", "access denied",
                "too many requests", "temporarily blocked", "verify you are human",
@@ -88,6 +91,22 @@ SHOW_FIELDS = [("name", "Name"), ("age", "Age"), ("height_text", "Height"), ("ci
 
 class ScanError(Exception):
     """A plain-English, one-sentence reason the scan stopped. Progress is saved."""
+
+
+def base_domain(netloc):
+    """'www.shaadi.com' / 'my.shaadi.com' -> 'shaadi.com'; 'x.co.in' -> 'x.co.in'; IPs unchanged."""
+    host = (netloc or "").split(":")[0].lower()
+    if re.fullmatch(r"[\d.]+", host) or host == "localhost":
+        return netloc.lower()
+    parts = host.split(".")
+    if len(parts) >= 3 and parts[-2] in ("co", "com", "org", "net", "ac", "gov") and len(parts[-1]) == 2:
+        return ".".join(parts[-3:])
+    return ".".join(parts[-2:])
+
+
+def same_site(url, base):
+    net = urlparse(url).netloc.lower()
+    return base_domain(net) == base
 
 
 def resolve_url(site):
@@ -188,6 +207,7 @@ class Scanner:
         self.store = store
         self.site_url = site_url
         self.domain = urlparse(site_url).netloc
+        self.base = base_domain(self.domain)
         self.ui = ui
         self.cap = max(1, min(HARD_CAP, int(cap or DEFAULT_CAP)))
         self.sources = sources or SOURCE_ORDER
@@ -197,6 +217,7 @@ class Scanner:
         calib = (store.state().get("calibration") or {}).get(self.domain) or {}
         self.calibrated = bool(calib.get("confirmed"))
         self.aliases = calib.get("aliases") or {}
+        self.source_urls = calib.get("source_urls") or {}
         self.counts = {"new": 0, "updated": 0, "unchanged": 0, "unavailable": 0}
         self.unreadable_streak = 0
 
@@ -261,6 +282,36 @@ class Scanner:
         except Exception:
             return None
 
+    def _settle(self):
+        """Let script-heavy pages finish loading and show lazy lists."""
+        try:
+            self.page.wait_for_load_state("networkidle", timeout=8000)
+        except Exception:
+            pass
+        try:
+            for _ in range(3):
+                self.page.mouse.wheel(0, 1500)
+                self.page.wait_for_timeout(400)
+            self.page.evaluate("window.scrollTo(0, 0)")
+        except Exception:
+            pass
+
+    def _current_page(self):
+        """The tab the user is looking at - preferring one on the matrimony site."""
+        pages = [p for p in self.ctx.pages if not p.is_closed()]
+        if not pages:
+            raise ScanError("The browser window was closed, so I stopped - say scan to try again.")
+        on_site = [p for p in pages if same_site(p.url, self.base)]
+        return (on_site or pages)[-1]
+
+    def _remember_source(self, source, url):
+        self.source_urls[source] = url
+        cal = self.store.state().get("calibration") or {}
+        entry = cal.get(self.domain) or {}
+        entry["source_urls"] = self.source_urls
+        cal[self.domain] = entry
+        self.store.update_state(calibration=cal)
+
     def _login_visible(self):
         try:
             return self.page.locator("input[type=password]:visible").count() > 0
@@ -276,7 +327,7 @@ class Scanner:
         out = []
         for it in items:
             href = urljoin(self.page.url, it.get("href") or "")
-            if urlparse(href).netloc == self.domain:
+            if same_site(href, self.base):
                 out.append({"href": href.split("#")[0], "text": it.get("text") or ""})
         return out
 
@@ -313,24 +364,53 @@ class Scanner:
                     "If you are already logged in, there is nothing to do.")
         for attempt in range(3):
             self.ui.enter("Press Enter here when you can see your home page or inbox: ")
-            try:
-                self.page = self.ctx.pages[-1] if self.ctx.pages else self.page
-            except Exception:
-                raise ScanError("The browser window was closed, so I stopped - say scan to try again.")
-            if not self._login_visible():
+            self.page = self._current_page()
+            self._settle()
+            here = urlparse(self.page.url).netloc
+            if not same_site(self.page.url, self.base):
+                problem = (f"The browser is showing {here or 'a blank page'}, not {self.base}. "
+                           f"Finish logging in to {self.base} in that window - if 'Sign in with "
+                           "Google' is blocked, use your mobile number and OTP, or email and password.")
+            elif self._login_visible():
+                problem = "I still see a login form in the browser. Finish logging in there."
+            else:
                 self.home_url = self.page.url
                 self.ui.say("Thanks, you are logged in. I will only read - nothing is sent, "
                             "accepted or rejected.")
                 return
             if attempt < 2:
-                self.ui.say("I still see a login form in the browser. Finish logging in there, "
-                            "then press Enter again.")
-        raise ScanError("I still see the login page, so I stopped - nothing was read.")
+                self.ui.say(problem + " Then press Enter again.")
+        raise ScanError(f"I could not see you logged in to {self.base}, so I stopped - nothing was read.")
+
+    def _ask_user_for_source(self, source, home):
+        """Could not find the page: let the person open it in the window."""
+        ans = self.ui.ask(f"I could not find your {SOURCE_WORDS[source]} page by myself. In the "
+                          f"browser window, click your way to it (for example "
+                          f"'{SOURCE_HINTS[source]}'), then press Enter here - or type 'skip'.")
+        if ans is None or ans.strip().lower() in ("skip", "no", "none", "s", "n"):
+            return None
+        self.page = self._current_page()
+        self._settle()
+        url = self.page.url.split("#")[0]
+        if not same_site(url, self.base) or url.rstrip("/") == (home or "").rstrip("/"):
+            self.ui.say(f"That still looks like your home page, so I skipped {SOURCE_WORDS[source]}.")
+            return None
+        self._remember_source(source, url)
+        self.ui.say(f"Got it - I will remember where your {SOURCE_WORDS[source]} page is.")
+        return {"href": url, "text": SOURCE_WORDS[source]}
+
+    def _diagnose(self, scan, source, links):
+        """Save which links a page had (link texts and addresses only) to help fix the playbook."""
+        body = (f"No profiles recognised on your {SOURCE_WORDS[source]} page.\n"
+                f"Page: {self.page.url}\nLinks on this page ({len(links)}):\n" +
+                "\n".join(f"{a['text'][:40]!r} -> {a['href']}" for a in links[:200]))
+        self._capture(scan, f"diagnostics_{source}.txt", body, self.page.url)
 
     def discover(self, scan):
         queue_urls = {q["url"] for q in scan["queue"]} | set(scan["done"])
         home = getattr(self, "home_url", self.site_url)
         self._goto(home)
+        self._settle()
         nav = self._links()
         used = set()
         for source in self.sources:
@@ -338,25 +418,31 @@ class Scanner:
                 continue
             words = SOURCES[source]
             link = None
-            for w in words:  # best word first
+            if self.source_urls.get(source):
+                link = {"href": self.source_urls[source], "text": SOURCE_WORDS[source]}
+            for w in ([] if link else words):  # best word first
                 for a in nav:
-                    t = a["text"].lower()
+                    t = a["text"].lower().strip()
                     if a["href"] in used or OWN_PROFILE.search(a["href"]):
                         continue
-                    if t == w or (len(t) < 40 and w in t):
+                    if t == w or (len(t) < 40 and re.search(r"(?<![a-z])" + re.escape(w) + r"(?![a-z])", t)):
                         link = a
                         break
                 if link:
                     break
             if not link:
-                self.ui.say(f"I could not find your {SOURCE_WORDS[source]} page, so I skipped it.")
+                link = self._ask_user_for_source(source, home)
+            if not link:
+                self.ui.say(f"Skipped your {SOURCE_WORDS[source]}.")
                 scan.setdefault("discovered", []).append(source)
+                self.store.save_scan(scan)
                 continue
             used.add(link["href"])
             url, found = link["href"], 0
             for page_no in range(LIST_PAGES_PER_SOURCE):
                 pace("list")
                 self._goto(url)
+                self._settle()
                 text = self._text()
                 self._check_blocked(text)
                 links = self._links()
@@ -368,7 +454,7 @@ class Scanner:
                     kind = None
                     if source == "chats" and THREAD_HREF.search(h) and h != url:
                         kind = "thread"
-                    elif PROFILE_HREF.search(h):
+                    elif PROFILE_HREF.search(h) or SITE_ID_HREF.search(h):
                         kind = "profile"
                     if kind:
                         scan["queue"].append({"url": h, "source": source, "kind": kind})
@@ -389,6 +475,8 @@ class Scanner:
                 url = nxt
             scan.setdefault("discovered", []).append(source)
             self.store.save_scan(scan)
+            if found == 0:
+                self._diagnose(scan, source, links)
             self.ui.say(f"Found {found} profile(s) in your {SOURCE_WORDS[source]}.")
         scan["phase"] = "READ"
         self.store.save_scan(scan)
@@ -446,8 +534,11 @@ class Scanner:
                 return False
             if CONFIRM.match(low):
                 cal = self.store.state().get("calibration") or {}
-                cal[self.domain] = {"confirmed": True, "aliases": self.aliases,
-                                    "at": datetime.now().isoformat(timespec="seconds")}
+                entry = cal.get(self.domain) or {}
+                entry.update({"confirmed": True, "aliases": self.aliases,
+                              "source_urls": self.source_urls,
+                              "at": datetime.now().isoformat(timespec="seconds")})
+                cal[self.domain] = entry
                 self.store.update_state(calibration=cal)
                 self.calibrated = True
                 self.ui.say("Thank you. I will read the rest the same way.")
@@ -517,7 +608,8 @@ class Scanner:
                 pending = [q for q in scan["queue"] if q["url"] not in scan["done"]]
                 if not pending:
                     self.store.finish_scan({"read": scan["read"], **self.counts})
-                    return {"status": "empty", "read": 0, **self.counts}
+                    return {"status": "empty", "read": 0, **self.counts,
+                            "captures": scan.get("captures")}
                 self.ui.say(f"Reading up to {self.cap - scan['read']} profile(s), one at a time, "
                             "a few seconds apart. Press Ctrl+C any time to pause safely.")
                 for item in pending:
@@ -562,6 +654,7 @@ class Scanner:
             finally:
                 try:
                     self.ctx.close()
+                    self.ui.say("I closed the browser window. Your login stays saved for next time.")
                 except Exception:
                     pass
 

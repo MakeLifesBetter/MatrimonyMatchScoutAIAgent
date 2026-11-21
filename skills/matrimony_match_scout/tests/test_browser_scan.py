@@ -13,6 +13,7 @@ from unittest import mock
 from helpers import FakeUI, tmpdir
 import pipeline
 import scan_browser
+import mock_site
 from mock_site import MockSite, browser_login
 from state_store import ScoutStore
 
@@ -51,6 +52,7 @@ class BrowserScanTests(unittest.TestCase):
         with self.assertRaises(scan_browser.ScanError) as cm:
             scan_browser.run_scan(self.store, "shaadi.com", ui)
         self.assertIn("nothing was read", str(cm.exception))
+        self.assertIn("could not see you logged in", str(cm.exception))
         self.assertEqual(ui.enters, 3)
         self.assertIn("log in there yourself", ui.text)
         self.assertEqual(self.site.passwords_seen, 0)  # the Scout never submitted a login
@@ -120,6 +122,58 @@ class BrowserScanTests(unittest.TestCase):
             self.scan(["<enter>", "yes"])
         self.assertIn("security check", str(cm.exception))
 
+    def _capture_scanner(self):
+        box = []
+        real = scan_browser.Scanner.__init__
+
+        def init(this, *a, **k):
+            real(this, *a, **k)
+            box.append(this)
+        return box, mock.patch.object(scan_browser.Scanner, "__init__", init)
+
+    def test_unknown_menu_names_user_opens_the_page_and_it_is_remembered(self):
+        self.login_as_human()
+        mock_site.ODD_NAV["on"] = True
+        box, patch = self._capture_scanner()
+
+        def open_page(path):
+            return lambda: box[0].page.goto(self.site.url.rstrip("/") + path)
+        with patch:
+            res, ui = self.scan(["<enter>", open_page("/inbox"), "skip", open_page("/matches"),
+                                 "skip", "yes"], cap=4)
+        self.assertIn("could not find your chats page by myself", ui.text)
+        self.assertIn("I will remember where your chats page is", ui.text)
+        self.assertIn("Skipped your interests received", ui.text)
+        self.assertEqual(res["read"], 4)
+        urls = self.store.state()["calibration"][box[0].domain]["source_urls"]
+        self.assertTrue(urls["chats"].endswith("/inbox") and urls["matches"].endswith("/matches"))
+        # next run: no questions about pages, it goes straight there
+        res2, ui2 = self.scan(["<enter>", "skip", "skip"], cap=2)
+        self.assertNotIn("find your chats page", ui2.text)
+        self.assertNotIn("find your matches page", ui2.text)
+        self.assertIn("Found", ui2.text)
+
+    def test_login_on_another_site_is_not_accepted(self):
+        self.login_as_human()
+        box, patch = self._capture_scanner()
+        other = self.site.url.replace("127.0.0.1", "localhost")  # a different site, like Google
+        with patch:
+            with self.assertRaises(scan_browser.ScanError) as cm:
+                self.scan([lambda: box[0].page.goto(other)] * 3)
+        self.assertIn("could not see you logged in", str(cm.exception))
+        self.assertEqual(self.store.load_profiles(), {})
+
+    def test_empty_pages_leave_a_diagnostics_file(self):
+        self.login_as_human()
+        mock_site.ODD_NAV["on"] = True
+        box, patch = self._capture_scanner()
+        with patch:
+            res, ui = self.scan(["<enter>", lambda: box[0].page.goto(self.site.url + "my-profile"),
+                                 "skip", "skip", "skip"])
+        self.assertEqual(res["status"], "empty")
+        self.assertTrue(list(self.d.rglob("diagnostics_chats.txt")))
+        self.assertIn("I closed the browser window", ui.text)
+
     def test_calibration_stop_pauses_before_full_scan(self):
         self.login_as_human()
         res, _ = self.scan(["<enter>", "stop"])
@@ -146,6 +200,12 @@ class ScanHelpersTests(unittest.TestCase):
             self.assertTrue(4 <= waits[0] <= 9 and 3 <= waits[1] <= 6)
         finally:
             os.environ["SCOUT_PACE_SECONDS"] = "0"
+
+    def test_same_site_includes_subdomains(self):
+        self.assertTrue(scan_browser.same_site("https://my.shaadi.com/inbox", "shaadi.com"))
+        self.assertTrue(scan_browser.same_site("https://www.shaadi.com/x", "shaadi.com"))
+        self.assertFalse(scan_browser.same_site("https://accounts.google.com/x", "shaadi.com"))
+        self.assertTrue(scan_browser.SITE_ID_HREF.search("https://www.shaadi.com/profile?x=SH12345678"))
 
     def test_hard_cap_and_url_resolution(self):
         s = scan_browser.Scanner(ScoutStore(tmpdir()), "https://www.shaadi.com", FakeUI(), cap=500)

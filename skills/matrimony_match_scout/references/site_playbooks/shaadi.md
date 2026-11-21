@@ -8,6 +8,11 @@ in the checkpoint. Do not rely on exact URLs; follow the links on the page.
 ## Open and log in
 - Open `https://www.shaadi.com` (regional sites exist — use the one the user
   normally uses). The user logs in themselves; a phone OTP is common.
+- "Sign in with Google" is refused by Google in program-controlled browsers
+  ("This browser or app may not be secure"). Tell the user to use mobile
+  number + OTP or email + password instead. Never try to get around Google's check.
+- After login Shaadi may move to a subdomain (for example my.shaadi.com) — that
+  is still the site.
 - Logged in when the top navigation shows the user's matches and inbox and no
   login form is visible.
 

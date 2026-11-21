@@ -29,13 +29,18 @@ class FakeUI:
         if not self.answers:
             return None
         a = self.answers.pop(0)
+        if callable(a):  # the "person" does something in the browser, then presses Enter
+            a()
+            a = ""
         self.lines.append("Response: " + str(a))
         return a
 
     def enter(self, prompt):
         self.say(prompt)
         self.enters += 1
-        if self.answers and self.answers[0] == "<enter>":
+        if self.answers and callable(self.answers[0]):
+            self.answers.pop(0)()
+        elif self.answers and self.answers[0] == "<enter>":
             self.answers.pop(0)
         self.lines.append("Response: ")
 

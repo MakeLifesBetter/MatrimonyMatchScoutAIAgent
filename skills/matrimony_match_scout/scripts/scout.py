@@ -607,7 +607,12 @@ class Scout:
             self.say(result["message"])
             return
         if result["status"] == "empty":
-            self.say("I looked at your pages but found no profiles listed there right now.")
+            self.say("I looked at your pages but could not recognise any profiles on them.")
+            if result.get("captures"):
+                self.say(f"I saved a short list of the links I saw in {result['captures']} "
+                         "(files named diagnostics_...). If you share that with whoever helps you set "
+                         "up the Scout, the page layout can be taught - or try 'scan' again and open "
+                         "your Matches page yourself when I ask.")
             return
         self.say(f"Done. I read {result['read']} profile(s): {result['new']} new, "
                  f"{result['updated']} changed since last time, {result['unchanged']} unchanged"

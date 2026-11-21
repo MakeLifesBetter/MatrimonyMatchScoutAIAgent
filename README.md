@@ -1,8 +1,8 @@
 # Matrimony Match Scout
 
-![version](https://img.shields.io/badge/version-v0.2.0-blue)
+![version](https://img.shields.io/badge/version-v0.2.1-blue)
 ![python](https://img.shields.io/badge/python-3.10%2B-brightgreen)
-![tests](https://img.shields.io/badge/tests-74%20passing-brightgreen)
+![tests](https://img.shields.io/badge/tests-78%20passing-brightgreen)
 ![privacy](https://img.shields.io/badge/data-stays%20on%20your%20laptop-purple)
 ![license](https://img.shields.io/badge/license-All%20Rights%20Reserved-red)
 
@@ -37,11 +37,16 @@ python3 skills/matrimony_match_scout/scripts/scout.py
 
 Then just talk: **"lets start"** → 5 questions → **"scan"** opens your site,
 you log in yourself, press **Enter**, and the Scout does the rest.
+If it can't find a page (Inbox, Matches…), it asks you to click to it once and remembers it.
+
+> [!NOTE]
+> Google blocks **"Sign in with Google"** in any program-controlled browser.
+> In the Scout's window, log in to Shaadi with your **mobile number + OTP** or **email + password**.
 No git? Use **Code → Download ZIP**, unzip, and run the last three lines inside the folder.
 
 ### Option 2 — AI app (Muse)
 
-1. Download the [skill zip](releases/matrimony_match_scout-muse-v0.2.0.zip)
+1. Download the [skill zip](releases/matrimony_match_scout-muse-v0.2.1.zip)
 2. In Muse, start a chat, **attach the zip**, and say **"Install this skill for me"**
 3. In a **new** chat say **"Run matrimony scout"** — Muse opens the browser, you log in, it scans and scores
 

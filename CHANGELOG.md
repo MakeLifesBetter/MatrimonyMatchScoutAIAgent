@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.2.1 — 2026-11-20
+- Login check now requires the browser to be on the matrimony site itself
+  (any subdomain, e.g. my.shaadi.com) - a Google error page no longer counts
+  as "logged in"; the Scout explains to use mobile OTP or email instead
+- Links on subdomains of the site are followed (was: exact host only)
+- If a page (Inbox, Matches, ...) cannot be found by its menu name, the Scout
+  asks you to click to it in the window, then remembers where it is
+- Waits for script-heavy pages to finish loading and scrolls lists before reading;
+  recognises Shaadi-style profile IDs in links
+- When a page shows no recognisable profiles, saves diagnostics_<page>.txt
+  (link texts and addresses only) so the layout can be taught
+- Says when it closes the browser window; calibration no longer forgets
+  learned page locations
+- 78 tests
+
 ## 0.2.0 — 2026-11-20
 - Terminal is now the complete flow: 5-question intake with read-back,
   "scan" / "open the app" opens a Playwright window with a persistent login,
