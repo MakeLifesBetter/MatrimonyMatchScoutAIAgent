@@ -12,8 +12,9 @@ conversation, and never above 50. Always say how long it will take before
 starting, give the time left as you go, and let the person walk away: after the
 one-profile check, the scan must finish on its own with no more questions.
 
-All state lives in one data folder the user owns (default
-`~/matrimony-scout-data`). Every script below is in `scripts/` and prints
+All state lives in one private data folder in your Muse workspace (default
+`~/matrimony-scout-data`) — it is the Scout's memory, not something the person
+opens. Everything the person gets, they get in the chat. Every script below is in `scripts/` and prints
 JSON in internal mode: `python3 scripts/scout.py --data-dir <D> <action>`.
 Never show raw JSON, file paths or tool names to the user unless they ask.
 
@@ -141,7 +142,8 @@ only after the user confirms. Remember the calibration in the checkpoint.
 Follow [File reading](references/file_reading.md): biodata PDFs and Word files,
 profile screenshots (read visible text with vision, never guess cut-off fields,
 never judge the photo), chat exports and broker spreadsheets.
-`read-files <folder>` handles everything
+Ask the person to attach files in the chat; save them into
+`<D>/files_to_read/` and run `read-files <D>/files_to_read`. It handles everything
 except screenshots; you ingest the results.
 
 ## 6. Score
@@ -160,9 +162,19 @@ Run `report`. It returns `status`:
   offer the scan or file reading. Never show an empty report.
 - `all_excluded` → nothing new passes; name the reasons and offer to loosen one.
 - `nothing_new` → say so plainly; never resend an earlier list.
-- `ok` → lead with the top 3 from `digest` in plain English (why each fits,
-  what is risky or unknown), then offer the Markdown report and the Excel sheet
-  (Ranked Matches / Profile Details / Updated Since Last Report) in one sentence.
+- `ok` → deliver it in the chat, in ONE reply:
+  1. The top 3 from `digest` in plain English (why each fits, what is risky or
+     unknown).
+  2. Attach both files from `attach`: the Excel sheet (Ranked Matches / Profile
+     Details / Updated Since Last Report) and the full report. Say in one line
+     that they can open or forward them to family from the chat.
+  3. If you cannot attach files, paste the full report (the `.md` file's text)
+     into the chat instead.
+  Never tell the person to open a folder or give them a file path.
+- Sharing with family is the person's choice. If they ask you to send it,
+  draft a short note from `share_text`, show the exact text and who it goes to,
+  and send only after they approve, through a messaging connector if one is
+  available. Otherwise they forward the attachments themselves.
 `report` marks the shown profiles as shown; use `report --preview` if you are
 not about to show it. Updated profiles carry "what changed".
 

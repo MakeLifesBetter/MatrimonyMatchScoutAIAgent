@@ -18,10 +18,11 @@ scoring and reports deterministic. Never show the JSON to the user.
   scout.py --data-dir D seen URL_OR_ID ...      (already read? when? - pick "the next 5")
   scout.py --data-dir D mark-unavailable ID     (deleted / hidden on the site)
   scout.py --data-dir D forget ID               (delete that record)
+  scout.py --data-dir D delete-all --confirm    (delete ALL Scout data - only after the person says yes)
   scout.py --data-dir D extract FILE.txt [--url URL]
   scout.py --data-dir D read-files FOLDER
   scout.py --data-dir D checkpoint save FILE.json | clear   ({phase, cursors, run_id})
-Data folder default: $SCOUT_DATA_DIR or ~/matrimony-scout-data
+Data folder (in the Muse workspace) default: $SCOUT_DATA_DIR or ~/matrimony-scout-data
 """
 import json
 import os
@@ -166,6 +167,18 @@ def internal(store, args):
         out = {"profile_id": rest[0], "available": False}
     elif cmd == "forget":
         out = {"profile_id": rest[0], "forgotten": store.forget_profile(rest[0])}
+    elif cmd == "delete-all":
+        if "--confirm" not in rest:
+            out = {"deleted": False, "say": "Ask the person first; then run delete-all --confirm."}
+        else:
+            known = {"interests.json", "profiles.json", "run_state.json", "shared_log.jsonl"}
+            names = {p.name for p in store.dir.iterdir()}
+            if names and not (names & known):
+                out = {"deleted": False, "say": "That folder does not look like Scout data - left alone."}
+            else:
+                shutil.rmtree(store.dir)
+                out = {"deleted": True, "say": "All your Scout data is deleted - interests, profiles, "
+                                               "history and reports."}
     elif cmd == "extract":
         url = rest[rest.index("--url") + 1] if "--url" in rest else None
         out = extract.extract_profile(Path(rest[0]).read_text(encoding="utf-8"), url=url)

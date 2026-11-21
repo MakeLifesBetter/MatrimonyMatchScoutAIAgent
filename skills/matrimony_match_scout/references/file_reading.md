@@ -13,9 +13,9 @@ same extraction schema and is scored in the same report. Record the file name
 
 `scout.py --data-dir <D> read-files <folder>` does all of this except
 screenshots and scanned PDFs, and returns records you can check and `ingest`.
-Ask the user to put files in `<D>/files_to_read/` (or attach them in chat).
+The person attaches files in the chat; save them into `<D>/files_to_read/` first.
 
 Rules:
 - One file with several people → one record each; confirm the count first.
 - The store dedupes the same person across files and the site.
-- Supplied files are the user's data: keep results in the data folder only.
+- Supplied files are the user's data: keep results in the Scout's data folder only.

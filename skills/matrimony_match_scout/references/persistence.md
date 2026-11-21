@@ -3,7 +3,8 @@
 You have no memory between sessions. The data folder is the memory, and all
 access goes through `scripts/state_store.py` (directly, or via `scout.py`).
 
-## Data folder (outside the skill folder; default ~/matrimony-scout-data)
+## Data folder (private, in the Muse workspace, outside the skill folder; default ~/matrimony-scout-data)
+The person never needs to open it: reports reach them as chat attachments.
 | File | What it is |
 |---|---|
 | `interests.json` | The user's criteria, versioned. Human-editable. |
@@ -13,7 +14,7 @@ access goes through `scripts/state_store.py` (directly, or via `scout.py`).
 | `shared_log.jsonl` | Every profile ever shown in a report, with its hash then. |
 | `run_state.json` | Checkpoint (phase + cursor), scan progress and timing, calibration per site, interests snapshot, last report ranks, flags. |
 | `reports/` | Generated reports (top 3, Markdown, Excel). |
-| `files_to_read/` | Where the user drops files for "read my files". |
+| `files_to_read/` | Files the person attached in chat, saved here for `read-files`. |
 
 ## Startup
 1. `status`. If `interests_hand_edited` → show the diff and confirm (accept or
@@ -39,5 +40,5 @@ The scan checkpoint is saved after every single profile.
 
 ## Deleting
 "Forget <name>" (`forget <id>`, after the person confirms) removes that
-profile's record; the shown-log keeps a "forgotten" line. "Start fresh" = rename the data folder with a date suffix,
-after the user confirms. Deleting the folder deletes everything.
+profile's record; the shown-log keeps a "forgotten" line. "Delete everything" / "start fresh": confirm with the person in plain words
+(it cannot be undone), then run `delete-all --confirm`.

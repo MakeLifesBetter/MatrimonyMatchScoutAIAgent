@@ -4,7 +4,7 @@
 - You always log in yourself. Credentials never pass through chat, the skill
   files, the scripts or the data folder.
 - Browsing is human-paced (one profile at a time), read-only, capped
-  per run (default 20, max 50), first two list pages per source. The Scout
+  per run (5 by default, at most 10 unless you ask for more, never more than 50), first two list pages per source. The Scout
   stops on any security check, warning or block page.
 - Muse drives the browser; the Scout's scripts only keep memory, score and
   write reports. They use the Python standard library plus `openpyxl` (Excel)

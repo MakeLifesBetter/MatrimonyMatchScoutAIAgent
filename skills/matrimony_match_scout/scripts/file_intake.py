@@ -1,8 +1,8 @@
 """
 Matrimony Match Scout - read profiles from files you supply.
 
-Put files in <data-dir>/files_to_read/ (or point at any folder) and say
-"read my files" (or run scout.py read-files FOLDER). Supported:
+Muse saves files the user attaches in chat into <data-dir>/files_to_read/
+and runs scout.py read-files on that folder. Supported:
   .txt .md          biodata text, or a chat export (e.g. WhatsApp .txt)
   .pdf              biodata PDF (text PDFs; Muse reads scanned pages with vision)
   .docx             biodata Word file

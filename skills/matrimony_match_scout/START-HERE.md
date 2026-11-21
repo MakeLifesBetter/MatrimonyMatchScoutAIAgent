@@ -48,8 +48,8 @@ A short message like this (made-up people):
 > 3. Lakshmi, 30, Seattle - Teacher. Score 70/100 (confidence low).
 >    Risky or unknown: Unknown - please check: education, smoking
 
-…plus a full report and an **Excel sheet** (Ranked Matches / Profile Details /
-Updated Since Last Report) you can share with family.
+…with the full report and an **Excel sheet** (Ranked Matches / Profile Details /
+Updated Since Last Report) attached right there in the chat, ready to forward to family.
 
 ## Things you can say
 "run matrimony scout" · "read 10 this time" · "read the next 5" · "how much is left?" ·
@@ -62,14 +62,14 @@ Updated Since Last Report) you can share with family.
 There are no commands to learn — say it your way.
 
 ## What stays private
-- Everything stays in ONE folder on your laptop: `matrimony-scout-data` in your
-  home folder. Nothing is uploaded anywhere.
+- The Scout keeps its notes in its own private folder in your Muse workspace.
+  Nothing is uploaded or sent anywhere by the Scout.
+- Your report comes to you in the chat. Who you forward it to is up to you —
+  Muse only sends something for you after you approve the exact message.
 - Chats are kept as short notes ("they asked about a call this weekend"), never
   copies of your conversations.
-- Your interests are in `interests.json` in that folder. You may edit it
-  yourself — the Scout notices and asks before using your change.
 - No face recognition and no judging of photos, ever.
-- Delete that folder and everything is gone.
+- Say **"delete all my scout data"** and, once you confirm, everything is gone.
 
 ## Try it with zero risk first
 In Muse, say **"show me a matrimony scout demo"** — it runs on made-up profiles,

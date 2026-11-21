@@ -30,6 +30,10 @@ class InternalActionTests(unittest.TestCase):
         self.assertEqual(act(d, "ingest", str(d / "p.json"))["new"], 2)
         prev = act(d, "report", "--preview")
         self.assertEqual(prev["status"], "ok")
+        self.assertEqual([Path(p).suffix for p in prev["attach"]], [".xlsx", ".md"])
+        self.assertTrue(all(Path(p).exists() for p in prev["attach"]))
+        self.assertIn("do not forward", prev["share_text"])
+        self.assertIn("Here is your match", prev["share_text"])
         self.assertIn("Shared values", Path(prev["markdown"]).read_text())
         self.assertEqual(act(d, "report")["status"], "ok")  # preview did not mark as shown
         self.assertEqual(act(d, "report")["status"], "nothing_new")
@@ -91,6 +95,19 @@ class InternalActionTests(unittest.TestCase):
         self.assertEqual(act(d, "report")["status"], "all_excluded")  # E1 gone, E2 too old
         self.assertTrue(act(d, "forget", "E2")["forgotten"])
         self.assertEqual(act(d, "status")["profiles_seen"], 1)
+
+    def test_delete_all_needs_confirmation_and_scout_data(self):
+        d = tmpdir() / "data"
+        (d.parent / "c.json").write_text(json.dumps({"age_max": 30}))
+        act(d, "save-interests", str(d.parent / "c.json"))
+        self.assertFalse(act(d, "delete-all")["deleted"])
+        self.assertTrue(d.exists())
+        self.assertTrue(act(d, "delete-all", "--confirm")["deleted"])
+        self.assertFalse(d.exists())
+        other = tmpdir()
+        (other / "my_photos.txt").write_text("not scout data")
+        self.assertFalse(act(other, "delete-all", "--confirm")["deleted"])
+        self.assertTrue((other / "my_photos.txt").exists())
 
     def test_chat_checkpoint_resume(self):
         d = tmpdir()

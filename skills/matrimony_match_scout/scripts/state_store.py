@@ -1,8 +1,8 @@
 """
 Matrimony Match Scout - persistence / memory layer (stdlib only).
 
-Everything the Scout knows lives in ONE user-owned data folder
-(never inside the skill folder):
+Everything the Scout knows lives in ONE private data folder in the Muse
+workspace (never inside the skill folder):
 
   interests.json          your criteria. Human-editable. Source of truth.
   interests_history.jsonl every change to your interests (who, when, what, why)
@@ -14,7 +14,7 @@ Everything the Scout knows lives in ONE user-owned data folder
                           interests snapshot, last report ranks, flags
   scout.lock              single-run lock (stale after 2 hours)
   reports/<date>/         digest.txt, report.md, report.xlsx
-  files_to_read/          files the user drops in for "read my files"
+  files_to_read/          files the user attached in chat, saved here by Muse
 Chats are never stored - only short summaries inside each profile record.
 
 Rules baked in:

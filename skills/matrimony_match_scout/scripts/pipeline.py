@@ -197,7 +197,10 @@ def make_report(store, mark_shown=True):
         store.mark_shared([r["profile_id"] for r in rows], report_id)
         store.update_state(last_report={"id": report_id, "at": stamp,
                                         "ranks": {str(r["rank"]): r["profile_id"] for r in rows}})
+    share = (f"Matrimony shortlist, {datetime.now().strftime('%d %b %Y')} (private - please do not forward "
+             "further):\n" + out["digest"])
     return {"status": "ok", "report_id": report_id, "rows": rows, "excluded": tally,
+            "attach": [out["excel"], out["markdown"]], "share_text": share,
             "new": sum(r["status"] == "New" for r in rows),
             "updated": sum(r["status"] == "Updated" for r in rows), **out}
 

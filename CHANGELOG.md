@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.3 — 2026-11-20
+- Reports are delivered in the Muse chat: top 3 as the message, the Excel sheet
+  and full report attached (pasted in the chat if attaching is not possible);
+  Muse never points the person to a folder or file path
+- `report` returns `attach` (files) and `share_text` (a ready-to-forward note);
+  sending to family only after the person approves the exact text and recipient
+- New `delete-all --confirm` ("delete all my scout data"); refuses folders that
+  are not Scout data
+- Docs say where data really lives: a private folder in the Muse workspace,
+  not "on your laptop"; files are attached in chat instead of dropped in a folder
+- 61 tests
+
 ## 0.3.2 — 2026-11-20
 - Consistency pass: every action SKILL.md and the conversation map mention
   now exists - new `explain`, `seen` (read unseen profiles first for "the
