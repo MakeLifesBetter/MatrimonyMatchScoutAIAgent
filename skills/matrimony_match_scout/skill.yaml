@@ -1,0 +1,5 @@
+name: "matrimony_match_scout"
+title: "Matrimony Match Scout"
+description: "Scans a user's own matrimony account chats, interests and search results through their browser, scores profiles against their saved interests, and delivers a ranked report of new and updated matches without repeating profiles already shown."
+category: "Work and knowledge"
+include_in_prompt: false

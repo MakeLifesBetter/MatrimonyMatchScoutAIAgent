@@ -1,0 +1,145 @@
+[
+  {
+    "profile_id": "DEMO1",
+    "profile_url": "https://example.invalid/profile/DEMO1",
+    "name": "Sample Asha",
+    "age": 27,
+    "city": "Seattle",
+    "state": "WA",
+    "country": "USA",
+    "education": "MS",
+    "profession": "Software Engineer",
+    "mother_tongue": "Telugu",
+    "marital_status": "never_married",
+    "food": "vegetarian",
+    "smoking": "never",
+    "drinking": "never",
+    "about_me": "Fictional sample. Loves hiking and travel; family matters a lot.",
+    "chat": {
+      "exists": true,
+      "initiated_by": "them",
+      "message_count": 4,
+      "last_message_by": "them",
+      "last_message_summary": "4 message(s); they started; last message from them and it asks you something. Talked about hiking, the weekend.",
+      "open_questions": [
+        "asked about the weekend"
+      ],
+      "contradictions": [],
+      "red_flags": []
+    },
+    "source": "chats",
+    "height_text": "5' 4\""
+  },
+  {
+    "profile_id": "DEMO2",
+    "profile_url": "https://example.invalid/profile/DEMO2",
+    "name": "Sample Divya",
+    "age": 29,
+    "city": "San Jose",
+    "state": "CA",
+    "country": "USA",
+    "education": "MBA",
+    "profession": "Product Manager",
+    "mother_tongue": "Malayalam",
+    "marital_status": "never_married",
+    "food": "eggetarian",
+    "smoking": "never",
+    "drinking": "never",
+    "about_me": "Fictional sample. Product person who loves travel and books.",
+    "chat": {
+      "exists": false
+    },
+    "source": "search"
+  },
+  {
+    "profile_id": "DEMO3",
+    "profile_url": "https://example.invalid/profile/DEMO3",
+    "name": "Sample Priya",
+    "age": 28,
+    "city": "Bellevue",
+    "state": "WA",
+    "country": "USA",
+    "education": "MS",
+    "profession": "UX Designer",
+    "mother_tongue": "Telugu",
+    "marital_status": "never_married",
+    "food": "vegetarian",
+    "smoking": "never",
+    "drinking": "never",
+    "about_me": "Fictional sample. Designer, family oriented.",
+    "chat": {
+      "exists": true,
+      "initiated_by": "user",
+      "message_count": 2,
+      "last_message_by": "user",
+      "last_message_summary": "2 message(s); you started; last message from you. Talked about work.",
+      "open_questions": [],
+      "contradictions": [],
+      "red_flags": []
+    },
+    "source": "chats"
+  },
+  {
+    "profile_id": "DEMO4",
+    "profile_url": "https://example.invalid/profile/DEMO4",
+    "name": "Sample Kavya",
+    "age": 33,
+    "city": "Chennai",
+    "state": null,
+    "country": "India",
+    "education": "M.Tech",
+    "profession": "Research Engineer",
+    "mother_tongue": "Tamil",
+    "marital_status": "never_married",
+    "food": "vegetarian",
+    "smoking": "never",
+    "drinking": "never",
+    "about_me": "Fictional sample. Outside the demo age range on purpose.",
+    "chat": {
+      "exists": false
+    },
+    "source": "search"
+  },
+  {
+    "profile_id": "DEMO5",
+    "profile_url": "https://example.invalid/profile/DEMO5",
+    "name": "Sample Sneha",
+    "age": 27,
+    "city": "Seattle",
+    "state": "WA",
+    "country": "USA",
+    "education": "MS",
+    "profession": "Pharmacist",
+    "mother_tongue": "Gujarati",
+    "marital_status": "never_married",
+    "food": "vegetarian",
+    "smoking": "occasionally",
+    "drinking": "never",
+    "about_me": "Fictional sample. Smokes occasionally - the demo dealbreaker.",
+    "chat": {
+      "exists": false
+    },
+    "source": "search"
+  },
+  {
+    "profile_id": "DEMO6",
+    "profile_url": "https://example.invalid/profile/DEMO6",
+    "name": "Sample Lakshmi",
+    "age": 28,
+    "city": "Seattle",
+    "state": "WA",
+    "country": "USA",
+    "education": null,
+    "profession": "Teacher",
+    "mother_tongue": "Telugu",
+    "marital_status": "never_married",
+    "food": null,
+    "smoking": null,
+    "drinking": "never",
+    "about_me": "Fictional sample with many fields not shown, to demo unknowns.",
+    "chat": {
+      "exists": false
+    },
+    "source": "interests_received"
+  }
+]

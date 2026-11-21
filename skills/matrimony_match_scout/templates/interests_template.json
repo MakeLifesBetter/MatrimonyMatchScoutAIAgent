@@ -1,0 +1,40 @@
+{
+  "_comment": "Your Scout interests. null or [] means don't care. You can edit this file by hand; the Scout notices and asks you to confirm.",
+  "site": null,
+  "search_for": null,
+  "my_name": null,
+  "age_min": null,
+  "age_max": null,
+  "places": [],
+  "dealbreakers": [],
+  "min_education": null,
+  "religion_must": null,
+  "religion_preferred": null,
+  "community_must": null,
+  "community_preferred": null,
+  "mother_tongue": null,
+  "must_match_tongue": false,
+  "marital_statuses": null,
+  "height_min_cm": null,
+  "height_max_cm": null,
+  "food_ok": null,
+  "drinking_ok": null,
+  "smoking_ok": null,
+  "relocation_needed": false,
+  "timeline": null,
+  "profession_keywords": null,
+  "red_flags": [
+    "asks for money",
+    "pressure to move off-platform"
+  ],
+  "green_flags": [],
+  "good_match_words": [],
+  "excluded_profile_ids": [],
+  "max_profiles_per_run": 20,
+  "sources": [
+    "chats",
+    "interests_received",
+    "matches",
+    "search"
+  ]
+}

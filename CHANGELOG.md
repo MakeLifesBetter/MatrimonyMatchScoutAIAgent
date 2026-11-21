@@ -1,0 +1,69 @@
+# Changelog
+
+## 0.2.0 — 2026-11-20
+- Terminal is now the complete flow: 5-question intake with read-back,
+  "scan" / "open the app" opens a Playwright window with a persistent login,
+  waits for Enter, finds Inbox / Interests received / Matches / Search,
+  calibrates on ONE profile (with corrections, and learns new labels), then
+  reads profiles at a human pace up to a per-run cap (max 50)
+- Checkpoint after every profile: a disconnect, closed window or Ctrl+C
+  resumes exactly where it stopped; leftovers beyond the cap go first next time
+- Rule-based extractor for all schema fields incl. height, income, horoscope;
+  chats reduced to summaries (chat page text is never written to disk)
+- Scoring: dealbreakers as hard filters; unknown values neutral and flagged,
+  never assumed to pass or fail; confidence level; red-flag cap 40; green flags
+- Reports: top 3 in plain English, Markdown, Excel (Ranked Matches / Profile
+  Details / Updated Since Last Report with before → now); never repeats;
+  explains instead of printing an empty report
+- Memory: hand edits to interests.json are shown and confirmed (accept or
+  undo), never overwritten - including broken edits; interest changes re-score
+  stored profiles without browsing; "undo"
+- Plain-English requests with or without apostrophes, including "lets start",
+  "open the app then", "how can you read the data?", "why is 1 ranked first",
+  "pass on 2", "draft a reply to Asha", "read my files", "refine my criteria"
+- File intake in the terminal: biodata txt/PDF/Word, chat exports, broker
+  CSV/Excel (contact columns never copied), captured pages
+- Understands more ways of asking: "run matrimony scout", "check the website",
+  "can you open chrome", "mark someone interested", "mark Riya as rejected";
+  anything mentioning the site or browser offers to scan instead of a dead end
+- Shaadi.com playbook (verify at calibration); updated skill references
+- 74 tests incl. a fictional mock matrimony site driven by a real headless
+  browser, and a scripted two-day demo transcript (tests/demo_transcript.txt)
+
+## Earlier unreleased notes
+- README rewritten: shorter, badges and a flow diagram, install reduced
+  to 2 options (command line, or Muse / Claude app UI) with direct
+  download links to the zips in this repo instead of the Releases page
+- START-HERE now links back to the main README and its install steps
+- Terminal: every answer now uses a visible "Response:" prompt, and
+  "lets start" (with or without the apostrophe) runs a real 5-question
+  Quick Start intake that saves your interests
+- Terminal scan: saying "scan" opens the matrimony site in a browser
+  window (Playwright, persistent profile so the login is remembered);
+  you log in yourself, press Enter in the terminal, and the matches /
+  search / inbox pages are captured into your data folder for scoring
+- Install is Terminal + Muse only: the Claude.ai option was removed
+  at the author's direction (Muse is the route with browser access)
+
+## 0.1.1 — 2026-11-20
+- START-HERE guide written for the end user, plus a demo mode on
+  fictional profiles
+- Quick Start intake: 5 questions before the first run, full criteria
+  refined after the first report
+- First run defaults: chats only, cap of 20 profiles, top 3 first
+- Plain-English per-source permission before reading private sources
+- Progress reporting in sentences during scans
+
+## 0.1.0 — 2026-11-20
+- First working version: SKILL.md orchestration with 8 reference prompts
+- Persistence layer: versioned interests file, dedupe, shared log with
+  no-repeat rule, resumable checkpoints, atomic writes with backup
+  recovery (13/13 tests)
+- Deterministic scoring: hard filters, weighted points, red-flag cap,
+  unknowns flagged (6/6 tests)
+- Reports generated locally: conversational digest, Markdown, Excel
+  with Ranked Matches / Profile Details / Updated sheets
+- Conversational terminal in plain English (no commands to learn)
+- Generic site playbook with a one-profile calibration step
+- File intake: biodata documents, screenshots, chat exports,
+  broker spreadsheets

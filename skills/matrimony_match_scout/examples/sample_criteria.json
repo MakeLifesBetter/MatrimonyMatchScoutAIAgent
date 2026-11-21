@@ -1,0 +1,41 @@
+{
+  "site": "example-matrimony.invalid",
+  "search_for": "me",
+  "age_min": 25,
+  "age_max": 30,
+  "places": [
+    "Seattle",
+    "Bay Area"
+  ],
+  "dealbreakers": [
+    "smoking"
+  ],
+  "min_education": "masters",
+  "mother_tongue": "Telugu",
+  "must_match_tongue": false,
+  "marital_statuses": [
+    "never_married"
+  ],
+  "food_ok": [
+    "vegetarian",
+    "eggetarian"
+  ],
+  "profession_keywords": [
+    "engineer",
+    "product",
+    "designer"
+  ],
+  "red_flags": [
+    "asks for money",
+    "pressure to move off-platform"
+  ],
+  "green_flags": [
+    "loves travel"
+  ],
+  "good_match_words": [
+    "family",
+    "hiking",
+    "travel"
+  ],
+  "max_profiles_per_run": 20
+}

@@ -1,0 +1,18 @@
+# User data created by the Scout at runtime - NEVER commit these
+matrimony_scout_data/
+**/matrimony_scout_data/
+data/
+reports/
+**/_test_data/
+
+# Python
+__pycache__/
+*.pyc
+
+# Release output (attach the zips to GitHub Releases instead)
+dist/
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/
