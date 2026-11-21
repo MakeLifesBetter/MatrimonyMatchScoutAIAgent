@@ -17,11 +17,7 @@ Never assume you can see a browser.
 - Route B — the assistant's own browser. A separate browser; the user signs in
   through takeover. Warn that the site may treat it as a new device and ask
   for an extra code.
-- Route C — the terminal version (`python3 scripts/scout.py`). It opens its
-  own Playwright window with a persistent profile in `<D>/browser_profile`,
-  so the login is remembered between runs. The user logs in there and presses
-  Enter in the terminal.
-- No route: explain the three routes in plain English and stop. Do not scan.
+- No route: explain the two routes in plain English and stop. Do not scan.
 
 ## Step 1: guide the login (say, in this order)
 1. "I will open <site> in the browser now."
@@ -43,7 +39,12 @@ Never assume you can see a browser.
   sentence, and let the user deal with it in the browser.
 
 ## What is stored
-Nothing about the login is stored by the Scout. In the terminal version the
-browser itself keeps its normal site cookies inside `<D>/browser_profile`
-(that is how it stays logged in); the Scout never reads or copies them.
-Deleting that folder logs the Scout's browser out.
+Nothing about the login is stored by the Scout. The browser keeps its own
+normal login for the site, as it always does; the Scout never reads or copies it.
+
+## Before the person walks away
+After login and the one-profile check, tell them how long the scan will take
+(`scan-start`) and that they can close Muse or step away. If the site later
+logs them out mid-scan, save the checkpoint and leave one sentence for when
+they are back: "The site logged you out after 12 profiles - log in again and
+say 'carry on'."

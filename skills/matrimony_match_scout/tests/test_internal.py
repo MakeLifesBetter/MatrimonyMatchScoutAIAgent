@@ -52,6 +52,20 @@ class InternalActionTests(unittest.TestCase):
         act(d, "hand-edit", "accept")
         self.assertFalse(act(d, "status")["interests_hand_edited"])
 
+    def test_scan_timing_through_ingest_and_demo(self):
+        d = tmpdir()
+        start = act(d, "scan-start", "--cap", "3")
+        self.assertIn("will take about", start["say"])
+        (d / "p.json").write_text(json.dumps([person("B1")]))
+        out = act(d, "ingest", str(d / "p.json"))
+        self.assertEqual(out["progress"]["read"], 1)
+        self.assertIn("1 of 3 read", out["progress"]["say"])
+        self.assertEqual(act(d, "scan-progress")["left"], 2)
+        self.assertIn("Done - I read 1", act(d, "scan-end")["say"])
+        self.assertNotIn("progress", act(d, "ingest", str(d / "p.json")))  # no scan running
+        self.assertIn("Here are your", act(d, "demo")["digest"])
+        self.assertEqual(act(d, "scan-start", "--cap", "500")["cap"], 50)  # hard cap
+
     def test_chat_checkpoint_resume(self):
         d = tmpdir()
         (d / "cp.json").write_text(json.dumps({"phase": "SCAN", "run_id": "chat-1",

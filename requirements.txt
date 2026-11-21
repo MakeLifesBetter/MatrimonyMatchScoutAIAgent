@@ -1,3 +1,2 @@
 openpyxl>=3.1      # Excel report
-playwright>=1.40   # browser window for "scan" (then: python3 -m playwright install chromium)
 pypdf>=4.0         # optional: read biodata PDFs

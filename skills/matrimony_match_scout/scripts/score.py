@@ -14,7 +14,7 @@ Order, always:
      shows. Unknown values are left out of the sum, so they neither help
      nor hurt.
   3. Judgement (0-20): from the AI in chat mode, or a simple rule-based
-     reading in the terminal. It always comes with a written reason.
+     reading when no AI judgement is given. It always comes with a written reason.
   4. Any red flag from your list caps the total at 40.
 Same inputs always give the same output.
 """
@@ -172,7 +172,7 @@ def _dealbreaker(rule, p):
 
 
 def _rule_judgement(profile, criteria):
-    """Terminal-mode judgement, 0-20, with a plain reason. The AI replaces this."""
+    """Fallback judgement, 0-20, with a plain reason, when Muse gives none."""
     pts, notes = 0, []
     about = _low(profile.get("about_me")) or ""
     words = [w.strip().lower() for w in (criteria.get("good_match_words") or []) if w.strip()]

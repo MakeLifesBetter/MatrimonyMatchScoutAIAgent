@@ -14,8 +14,7 @@ Use on a site with no playbook, and to re-check a playbook after a redesign.
 5. CALIBRATION: extract that profile, show every field (unknowns as "not
    shown"), ask "Did I read this correctly? Anything wrong or missing?".
 6. Apply corrections. If a corrected value sits under a label you did not know
-   (e.g. "Hometown"), remember that label for this site (the terminal does this
-   automatically and stores it with the calibration). Start the bulk scan only
+   (e.g. "Hometown"), remember that label for this site and note it in the checkpoint. Start the bulk scan only
    after the user confirms.
 7. During the scan, if a page looks different, re-map that page type once. Three
    unreadable profiles in a row → stop, save, and tell the user in one sentence.

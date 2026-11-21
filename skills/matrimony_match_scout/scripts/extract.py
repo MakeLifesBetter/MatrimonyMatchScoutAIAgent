@@ -11,7 +11,7 @@ show stay None. Nothing is guessed. Chats are reduced to counts, who
 wrote last, topics and flags - the message text itself is never returned.
 
 The AI chat layer may use this as a first pass and correct it; the
-terminal uses it as-is, after the user confirms one calibration profile.
+fallback is used as-is when no AI correction is given.
 """
 import re
 from datetime import date

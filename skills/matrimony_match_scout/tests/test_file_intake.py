@@ -90,7 +90,7 @@ class FileIntakeTests(unittest.TestCase):
         (self.f / "shot.png").write_bytes(b"\x89PNG")
         (self.f / "weird.bin").write_bytes(b"\x00")
         skipped = dict(self.read()["skipped"])
-        self.assertIn("AI chat mode", skipped["shot.png"])
+        self.assertIn("Muse reads these", skipped["shot.png"])
         self.assertIn("weird.bin", skipped)
 
     def test_terminal_captures_are_readable(self):

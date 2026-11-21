@@ -4,7 +4,7 @@ For any matrimony site without its own playbook, follow
 `references/site_learning.md` in full: map navigation, one list page, one
 profile page, one chat thread, calibrate on one profile with the user, then scan.
 
-What the terminal looks for (and what you can look for too):
+What to look for:
 - Sources by link text: Inbox / Chats / Messages; Interests received /
   Requests / Invitations; My matches / New matches / Daily / Recommended;
   Search / Search results.

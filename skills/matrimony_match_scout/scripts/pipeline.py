@@ -1,6 +1,6 @@
 """
 Matrimony Match Scout - glue between the store, scoring and reports.
-Used by the terminal (scout.py) and by the AI chat layer (internal actions).
+Used by scout.py, the actions the Muse skill calls.
 """
 from collections import Counter
 from datetime import datetime

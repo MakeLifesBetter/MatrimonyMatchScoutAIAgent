@@ -5,6 +5,11 @@ search) through a browser they logged into themselves, compares every
 profile with what they said they want, and gives a short ranked shortlist
 with a reason for each. Never shows the same profile twice. Read-only.
 
+Browsing in Muse is slow — roughly 30–60 seconds per profile — so a scan of
+20 profiles takes about 15–25 minutes. Always say how long it will take before
+starting, give the time left as you go, and let the person walk away: after the
+one-profile check, the scan must finish on its own with no more questions.
+
 All state lives in one data folder the user owns (default
 `~/matrimony-scout-data`). Every script below is in `scripts/` and prints
 JSON in internal mode: `python3 scripts/scout.py --data-dir <D> <action>`.
@@ -32,8 +37,8 @@ Never show raw JSON, file paths or tool names to the user unless they ask.
 
 1. Run `status`. It tells you whether interests exist, whether the interests
    file was hand-edited (`interests_hand_edited`, `hand_edit_diff`) or is broken
-   (`interests_file_error`), whether a terminal scan is paused (`paused_scan`),
-   and your own last chat checkpoint (`chat_checkpoint`).
+   (`interests_file_error`), whether a scan was interrupted
+   (`chat_checkpoint`, `scan_in_progress`), and how many profiles exist.
 2. If the file was hand-edited: show the diff in plain English and ask "Should I
    use your edited version?". Yes → `hand-edit accept`. No → `hand-edit revert`
    (the edited copy is kept). Never save interests over an unconfirmed edit.
@@ -62,7 +67,7 @@ Follow [Login guide](references/login_guide.md). Check which browser route is
 available before opening anything. Open the site, ask the user to log in in the
 browser themselves, wait until they say they are logged in, then verify (their
 name or inbox visible, no login form). If no route is available, say so and
-offer the terminal version instead — never claim to see a browser you cannot.
+explain how to set it up — never claim to see a browser you cannot.
 
 ## 3. Calibration — one profile first
 
@@ -74,29 +79,50 @@ only after the user confirms. Remember the calibration in the checkpoint.
 
 ## 4. Scan — you drive the browser
 
+**Before you start, tell the person how long it will take.**
 1. Ask permission for each private source in plain words (chats first).
    Default first run: chats + interests received, cap 20.
-2. Visit list pages, then profiles one at a time at a human pace.
-3. For every profile: extract per [Extraction schema](references/extraction_schema.md),
+2. Run `scan-start --cap <N> --list-pages <number of list pages you will open>`
+   and say its `say` line in your own words, for example: "Reading up to 20
+   profiles will take about 15–25 minutes. You don't need to watch — you can
+   close Muse or do something else and come back; your shortlist will be
+   waiting." If the cap is above 5, offer the quick first batch it suggests.
+3. Do the one-profile calibration (section 3) BEFORE the person walks away —
+   it is the last question you ask until the scan is finished.
+
+**While scanning:**
+4. Visit list pages, then profiles one at a time at a human pace.
+5. For every profile: extract per [Extraction schema](references/extraction_schema.md),
    write it to a small JSON file in the data folder, run `ingest <file>`, and
    save `checkpoint save <file>` with the next cursor. This happens after EVERY
    profile, so a disconnect resumes instead of restarting.
-4. You may first run `extract <page.txt> --url <url>` for a rule-based first
+6. `ingest` returns `progress`. Whenever `progress.tell_user_now` is true
+   (after the first profile, every 5 profiles, and at the end), post its `say`
+   line, for example "10 of 20 read — about 6 minutes left". The estimate
+   switches to the real measured pace after a few profiles.
+7. Never stop to ask a question mid-scan. Anything uncertain (an odd field, an
+   unreadable profile) goes in the report as "unknown — please check" instead.
+   You may first run `extract <page.txt> --url <url>` for a rule-based first
    pass, then correct it from what you see.
-5. Report progress in sentences ("I have read 8 of 20"). Remind the user once
-   that saying stop pauses safely.
-6. Stop and explain in one sentence if the site shows a security check, a
-   warning, or logs the user out; save the checkpoint first. Offer browser
-   takeover for anything only the user can do.
-7. Mark deleted or hidden profiles unavailable (`set-status` is for user
-   verdicts; leave the record out of `ingest` and note it).
+8. Stop early only for things that need the person: the site shows a security
+   check, a warning, or logs them out. Save the checkpoint first, then post one
+   plain sentence saying what happened and what to do when they are back.
+
+**When it is done:**
+9. Run `scan-end` (it gives the total time) and go straight to the report
+   (section 7), so the shortlist is the first thing the person sees when they
+   come back. Start that message with the time taken and the counts, e.g.
+   "Done — I read 20 profiles in 18 minutes. Here are your top 3:".
+10. If the person comes back to a paused scan (`status` shows a checkpoint or
+    `scan_in_progress`), offer to carry on, with a fresh `scan-start` estimate
+    for what is left.
 
 ## 5. Files the user supplies
 
 Follow [File reading](references/file_reading.md): biodata PDFs and Word files,
 profile screenshots (read visible text with vision, never guess cut-off fields,
-never judge the photo), chat exports, broker spreadsheets, and the terminal's
-captured pages in `<D>/captures/`. `read-files <folder>` handles everything
+never judge the photo), chat exports and broker spreadsheets.
+`read-files <folder>` handles everything
 except screenshots; you ingest the results.
 
 ## 6. Score
@@ -123,19 +149,11 @@ not about to show it. Updated profiles carry "what changed".
 
 ## 8. After the report
 
-Map plain English to actions with [Conversational terminal](references/conversational_terminal.md):
+Map plain English to actions with [Conversation map](references/conversation_map.md):
 interested / pass (`set-status`), why someone ranks where they do, draft a
 reply (draft only — send only after the user approves the exact text), what was
 shown before (`history`), refine criteria. Rejected profiles never come back.
 Memory rules are in [Persistence](references/persistence.md).
-
-## Terminal version
-
-The same flow runs without an AI: `python3 scripts/scout.py`. The terminal
-opens the site in a Playwright window, waits for the user to log in and press
-Enter, calibrates on one profile, scans at a human pace, and writes the same
-data folder — so a user can scan in the terminal and talk to you about it
-later, or the other way round.
 
 ## Available connectors
 
@@ -144,6 +162,8 @@ later, or the other way round.
 
 ## Alternatives for better results
 
+- First time on a site? Offer the quick batch of 5 (about 5–10 minutes) so the
+  person sees results fast, then a bigger run they can leave unattended.
 - If a site blocks browsing, ask for biodata files or chat exports and score
   them through the same pipeline instead of ending the run.
 - With a large backlog, run chats only first, then widen to matches and search.

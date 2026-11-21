@@ -7,8 +7,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(ROOT / "tests"))
-os.environ.setdefault("SCOUT_PACE_SECONDS", "0")
-os.environ.setdefault("SCOUT_HEADLESS", "1")
 
 
 class FakeUI:

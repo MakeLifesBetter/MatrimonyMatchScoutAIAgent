@@ -2,15 +2,13 @@
 Matrimony Match Scout - read profiles from files you supply.
 
 Put files in <data-dir>/files_to_read/ (or point at any folder) and say
-"read my files". Supported in the terminal:
+"read my files" (or run scout.py read-files FOLDER). Supported:
   .txt .md          biodata text, or a chat export (e.g. WhatsApp .txt)
-  .pdf              biodata PDF (text PDFs; scanned images need the AI chat mode)
+  .pdf              biodata PDF (text PDFs; Muse reads scanned pages with vision)
   .docx             biodata Word file
   .csv .xlsx        broker spreadsheets - one row per person
   .json             records already in the extraction schema
-  captures/<run>/profile_*.txt   pages the terminal scan saved
-Images (.png/.jpg screenshots) are listed as "needs the AI chat mode",
-which reads visible text with vision. Nothing is guessed.
+Images (.png/.jpg screenshots) are listed for Muse to read with vision. Nothing is guessed.
 Chat exports are reduced to a summary - the export itself is not copied.
 """
 import csv
@@ -132,7 +130,7 @@ def read_folder(store, folder, criteria=None):
             continue
         try:
             if ext in IMAGE_EXT:
-                out["skipped"].append((path.name, "a screenshot - the AI chat mode can read it"))
+                out["skipped"].append((path.name, "a screenshot - Muse reads these with vision"))
                 continue
             if ext in (".csv", ".xlsx"):
                 recs, unmapped = _sheet_records(path)

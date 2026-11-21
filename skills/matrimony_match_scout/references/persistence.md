@@ -11,9 +11,8 @@ access goes through `scripts/state_store.py` (directly, or via `scout.py`).
 | `profiles.json` | Every profile ever seen, deduped, with content hash, sources, availability, user verdict, and a copy of what the user last saw. |
 | `judgements.json` | AI / rule judgements, kept apart from the hash. |
 | `shared_log.jsonl` | Every profile ever shown in a report, with its hash then. |
-| `run_state.json` | Scan queue + done list + cursor, calibration per site, interests snapshot, last report ranks, flags. |
-| `captures/`, `reports/` | Page text read, and generated reports. |
-| `browser_profile/` | The terminal browser's own profile (keeps the login). |
+| `run_state.json` | Checkpoint (phase + cursor), scan progress and timing, calibration per site, interests snapshot, last report ranks, flags. |
+| `reports/` | Generated reports (top 3, Markdown, Excel). |
 | `files_to_read/` | Where the user drops files for "read my files". |
 
 ## Startup

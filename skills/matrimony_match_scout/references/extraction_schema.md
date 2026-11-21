@@ -56,5 +56,5 @@ Rules:
 - Never store phone numbers, emails or addresses, even if visible.
 - `qualitative` and `ai_judgement` are kept apart from the profile, so a new
   judgement never makes a profile look "updated".
-- The terminal's rule-based extractor (`scripts/extract.py`) fills the same
-  schema; `scout.py extract <page.txt> --url <url>` runs it on one page.
+- The rule-based extractor (`scripts/extract.py`) fills the same schema as a
+  first pass; `scout.py extract <page.txt> --url <url>` runs it on one page.

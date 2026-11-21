@@ -4,7 +4,7 @@ Matrimony Match Scout - report builder.
 Reports are built LOCALLY from saved data; the browser is only a source.
 From one list of report rows (see pipeline.report_rows) it writes, into
 <data-dir>/reports/<date-time>/:
-  digest.txt   the short top-3 message shown in the terminal / chat
+  digest.txt   the short top-3 message shown in chat
   report.md    full readable report to share with family
   report.xlsx  Excel: Ranked Matches / Profile Details / Updated Since Last Report
 Only profiles that are new to you, or changed since you last saw them,

@@ -39,7 +39,8 @@ AI chat mode (you), anchored:
   5 generic, 10 several shared values, 15 strong overlap in their own words.
 - Chat (only if one exists): 0 red flag, 2 one-sided or evasive,
   5 warm, responsive, consistent with the profile.
-Terminal mode uses the same anchors with simple rules and says "Rule-based reading".
+If no AI judgement is given for a profile, `score.py` applies the same anchors
+with simple rules and labels it "Rule-based reading".
 
 ## 4. Red-flag cap
 Any red flag from the user's list — found in the chat or in their profile text —

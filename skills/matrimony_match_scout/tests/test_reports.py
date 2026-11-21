@@ -79,9 +79,9 @@ class ReportTests(unittest.TestCase):
         pipeline.make_report(s)
         s.upsert_profile(person("OLD", age=33), "search")  # excluded at first
         self.assertEqual(pipeline.make_report(s)["status"], "all_excluded")
-        with mock.patch("scan_browser.Scanner.run", side_effect=AssertionError("browsed!")):
+        with mock.patch("socket.socket", side_effect=AssertionError("went online!")):
             s.save_interests(dict(CRIT, age_max=35), "user", "widened")
-            res = pipeline.rescore(s)
+            res = pipeline.rescore(s)  # saved data only - no network at all
         self.assertEqual(res["ready_to_show"], 1)
         r = pipeline.make_report(s)
         self.assertEqual([row["profile_id"] for row in r["rows"]], ["OLD"])

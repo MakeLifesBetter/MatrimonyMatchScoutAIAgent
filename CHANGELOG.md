@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.3.0 — 2026-11-20
+- Muse only: the terminal (CLI) route is removed - the conversational
+  terminal, the Playwright scanner and their tests are gone. scout.py is now
+  just the actions Muse calls (memory, scoring, reports, file reading)
+- Time estimates: `scan-start` tells the person up front how long a scan will
+  take (about 30-60 s per profile) and offers a quick first batch of 5;
+  every `ingest` returns progress with time left, switching to the measured
+  pace after a few profiles; `scan-progress`, `scan-end` give the rest
+- SKILL.md: say the estimate before starting, post "10 of 20 read - about 6
+  minutes left" updates, never ask questions after the one-profile check so
+  the scan finishes unattended, and lead with the shortlist when it is done
+- README and START-HERE rewritten for Muse: start it, log in, check one
+  profile, then leave or close the app and come back later
+- New reference: conversation_map.md (replaces conversational_terminal.md)
+- 57 tests
+
 ## 0.2.1 — 2026-11-20
 - Login check now requires the browser to be on the matrimony site itself
   (any subdomain, e.g. my.shaadi.com) - a Google error page no longer counts

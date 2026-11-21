@@ -1,7 +1,8 @@
 # Privacy
 
-Matrimony Match Scout runs on your own laptop, with your own login. There is
-no server, no account with us, and no analytics.
+Matrimony Match Scout is a skill that Muse runs for you, in a browser you log
+into yourself. The Scout's own files stay in one folder on your laptop. There
+is no Scout server, no account with us, and no analytics.
 
 ## What it reads
 Only your own matrimony account, and only the parts you agree to: chats,
@@ -14,11 +15,9 @@ One folder you own (default `~/matrimony-scout-data`):
 - `profiles.json` — structured notes on each profile, deduped
 - `shared_log.jsonl` — which profiles you were shown, and when
 - `run_state.json` — where a scan stopped, so it can resume
-- `captures/` — the text of profile and list pages read (inbox: names and links only)
 - `reports/` — your top 3, Markdown report and Excel sheet
-- `browser_profile/` — the terminal browser's own profile. Like any browser it
-  keeps the site's login cookie so you stay logged in; the Scout never reads
-  or copies it. Delete this folder to log the Scout's browser out.
+- Your login stays inside the browser Muse uses, like any normal login; the
+  Scout never reads or copies it.
 
 ## What it never does
 - Never asks for, sees, types or stores your password or one-time codes
@@ -34,4 +33,4 @@ Delete the data folder. There are no other copies.
 
 ## A note to contributors
 Never commit a data folder, a report, or a real profile. Examples, demos and
-tests use fictional people only (`tests/mock_site.py` is a made-up site).
+tests use fictional people only .
