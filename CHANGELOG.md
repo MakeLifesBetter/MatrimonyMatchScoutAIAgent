@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.7 — 2026-11-20
+- README rewritten to be clear and crisp: a complete "All features at a glance"
+  section (getting started, finding profiles, scoring, results, memory, calls,
+  time and control, language, safety - one line per feature), then shorter
+  how-to sections without repetition; adds features that were missing or buried
+  (file reading, details read from each profile, reply drafts, ranking
+  explanations, history, demo, resume after disconnect, deleted profiles,
+  forget / delete all)
+
 ## 0.3.6 — 2026-11-20
 - First-run welcome: right after install (status `first_run`), Muse opens with a
   crisp ten-line summary of what the Scout can do (`welcome`), in the person's
