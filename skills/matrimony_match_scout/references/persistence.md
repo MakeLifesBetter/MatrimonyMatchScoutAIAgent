@@ -38,6 +38,6 @@ A corrupt data file is restored from `.bak` and reported in plain English.
 The scan checkpoint is saved after every single profile.
 
 ## Deleting
-"Forget <name>" removes that profile's record (the shown-log keeps a
-"forgotten" line). "Start fresh" = rename the data folder with a date suffix,
+"Forget <name>" (`forget <id>`, after the person confirms) removes that
+profile's record; the shown-log keeps a "forgotten" line. "Start fresh" = rename the data folder with a date suffix,
 after the user confirms. Deleting the folder deletes everything.

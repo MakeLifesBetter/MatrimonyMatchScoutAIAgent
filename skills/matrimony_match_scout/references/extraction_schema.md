@@ -41,7 +41,7 @@ record anything about photos.
     "contradictions": ["chat says Austin, profile says Seattle"],
     "red_flags": ["asks for money (mentions 'gift card')"]
   },
-  "source": "chats | interests_received | matches | search | file | scan_capture",
+  "source": "chats | interests_received | matches | search | file | page_capture",
   "source_detail": "page URL, thread, or file name and row",
   "qualitative": 14,
   "ai_judgement": "One sentence: why the 0-20 judgement (AI chat mode only)."

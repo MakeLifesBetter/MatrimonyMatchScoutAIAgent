@@ -1,8 +1,8 @@
 # Matrimony Match Scout — a skill for Muse
 
-![version](https://img.shields.io/badge/version-v0.3.1-blue)
+![version](https://img.shields.io/badge/version-v0.3.2-blue)
 ![works in](https://img.shields.io/badge/works%20in-Muse-7A2E4D)
-![tests](https://img.shields.io/badge/tests-58%20passing-brightgreen)
+![tests](https://img.shields.io/badge/tests-60%20passing-brightgreen)
 ![privacy](https://img.shields.io/badge/data-stays%20on%20your%20laptop-purple)
 ![license](https://img.shields.io/badge/license-All%20Rights%20Reserved-red)
 
@@ -24,7 +24,7 @@
 
 ## 🚀 Install in Muse (2 minutes)
 
-1. Download the [skill zip](releases/matrimony_match_scout-muse-v0.3.1.zip)
+1. Download the [skill zip](releases/matrimony_match_scout-muse-v0.3.2.zip)
 2. Open Muse, start a chat, **attach the zip**, and say **"Install this skill for me"**
 3. Start a **new** chat and say **"Run matrimony scout"**
 

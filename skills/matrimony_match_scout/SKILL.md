@@ -58,7 +58,8 @@ cover several questions at once; "skip" means don't care. Save with
 ask if they are right. The fuller criteria (education, religion, community,
 food, smoking/drinking, relocation, timeline, red flags, green flags) are
 refined AFTER the first report, using real profiles the user liked or passed on
-as examples. Offer the demo (`examples/`) if the user hesitates.
+as examples. If the user hesitates, run `demo` (fictional profiles) and show its
+`digest` so they see the exact format before any login.
 
 Any later change ("change my age range to 26 to 30") is applied at once, read
 back in one sentence, saved as a new version, and followed by `rescore` —
@@ -102,7 +103,11 @@ only after the user confirms. Remember the calibration in the checkpoint.
    it is the last question you ask until the scan is finished.
 
 **While scanning:**
-4. Visit list pages, then profiles one at a time at a human pace.
+4. Visit list pages, then profiles one at a time at a human pace. Before
+   opening profiles, run `seen <url> <url> ...` on the profile links you found
+   and read the ones not seen yet first — that is what "the next 5" means.
+   Already-seen profiles are re-read only when there is room under the cap
+   (that is how changes are noticed).
 5. For every profile: extract per [Extraction schema](references/extraction_schema.md),
    write it to a small JSON file in the data folder, run `ingest <file>`, and
    save `checkpoint save <file>` with the next cursor. This happens after EVERY
@@ -115,17 +120,19 @@ only after the user confirms. Remember the calibration in the checkpoint.
    unreadable profile) goes in the report as "unknown — please check" instead.
    You may first run `extract <page.txt> --url <url>` for a rule-based first
    pass, then correct it from what you see.
-8. Stop early only for things that need the person: the site shows a security
+8. A profile page that says it was deleted, hidden or deactivated: run
+   `mark-unavailable <id>` and move on — it will not appear in reports.
+9. Stop early only for things that need the person: the site shows a security
    check, a warning, or logs them out. Save the checkpoint first, then post one
    plain sentence saying what happened and what to do when they are back.
 
 **When it is done:**
-9. Run `scan-end` (it gives the total time) and go straight to the report
+10. Run `scan-end` (it gives the total time) and go straight to the report
    (section 7), so the shortlist is the first thing the person sees when they
    come back. Start that message with the time taken and the counts, e.g.
    "Done — I read 10 profiles in 9 minutes. Here are your top 3:". Then offer
    the next run: "Want me to read the next 5?"
-10. If the person comes back to a paused scan (`status` shows a checkpoint or
+11. If the person comes back to a paused scan (`status` shows a checkpoint or
     `scan_in_progress`), offer to carry on, with a fresh `scan-start` estimate
     for what is left.
 
@@ -162,9 +169,12 @@ not about to show it. Updated profiles carry "what changed".
 ## 8. After the report
 
 Map plain English to actions with [Conversation map](references/conversation_map.md):
-interested / pass (`set-status`), why someone ranks where they do, draft a
-reply (draft only — send only after the user approves the exact text), what was
-shown before (`history`), refine criteria. Rejected profiles never come back.
+interested / pass (`set-status`), why someone ranks where they do
+(`explain <id>`), draft a reply (draft only — send only after the user approves
+the exact text), what was shown before (`history`), forget someone
+(`forget <id>`, after they confirm), refine criteria. Rejected profiles never
+come back. To turn a name or rank into an ID, use the report's ranked list or
+`seen <name>`.
 Memory rules are in [Persistence](references/persistence.md).
 
 ## Available connectors

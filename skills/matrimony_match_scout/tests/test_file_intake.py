@@ -1,4 +1,4 @@
-"""File reading: biodata txt/pdf/docx, chat exports, broker sheets, captures, screenshots."""
+"""File reading: biodata txt/pdf/docx, chat exports, broker sheets, saved page text, screenshots."""
 import csv
 import unittest
 import zipfile
@@ -93,11 +93,11 @@ class FileIntakeTests(unittest.TestCase):
         self.assertIn("Muse reads these", skipped["shot.png"])
         self.assertIn("weird.bin", skipped)
 
-    def test_terminal_captures_are_readable(self):
+    def test_saved_page_text_with_url_is_readable(self):
         (self.f / "profile_SH9001.txt").write_text(
             "URL: https://site.invalid/profile/SH9001\nCaptured: x\n\nName: Cap Test\nAge: 26")
         rec = self.read()["records"][0]
-        self.assertEqual((rec["profile_id"], rec["source"]), ("SH9001", "scan_capture"))
+        self.assertEqual((rec["profile_id"], rec["source"]), ("SH9001", "page_capture"))
 
 
 if __name__ == "__main__":

@@ -131,18 +131,19 @@ class MemoryTests(unittest.TestCase):
         self.assertIn("A", s2.load_profiles())
         self.assertIn("profiles.json", s2.recovered)
 
-    def test_scan_checkpoint_survives_disconnect(self):
-        scan = self.s.start_scan("https://x.invalid", cap=5)
-        scan["queue"] = [{"url": "u1", "source": "chats", "kind": "thread"},
-                         {"url": "u2", "source": "search", "kind": "profile"}]
-        scan["done"].append("u1")
-        scan["read"] = 1
-        self.s.save_scan(scan)
-        again = ScoutStore(self.d).scan_state()
-        self.assertEqual(again["done"], ["u1"])
-        self.assertEqual(again["read"], 1)
-        self.s.finish_scan({"read": 2})
-        self.assertIsNone(self.s.scan_state())
+    def test_checkpoint_survives_disconnect(self):
+        self.s.save_checkpoint("SCAN", {"chats": {"done": ["SH1"], "next": "SH2"}}, "run-1")
+        again = ScoutStore(self.d).load_checkpoint()
+        self.assertEqual((again["phase"], again["cursors"]["chats"]["next"]), ("SCAN", "SH2"))
+        self.s.clear_checkpoint()
+        self.assertIsNone(self.s.load_checkpoint()["phase"])
+
+    def test_find_by_id_url_or_name(self):
+        self.s.upsert_profile(person("A", name="Asha Test", profile_url="https://x.invalid/profile/A"), "x")
+        self.assertEqual(self.s.find("A"), ["A"])
+        self.assertEqual(self.s.find("https://x.invalid/profile/A/"), ["A"])
+        self.assertEqual(self.s.find("asha"), ["A"])
+        self.assertEqual(self.s.find("nobody"), [])
 
     def test_single_run_lock(self):
         with self.s.lock():

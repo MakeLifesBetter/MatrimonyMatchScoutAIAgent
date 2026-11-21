@@ -59,6 +59,8 @@ def criteria_summary(c):
             bits.append(f"{PRETTY[key]}: {_val(v)}")
     if c.get("must_match_tongue"):
         bits.append("mother tongue must match")
+    if c.get("max_profiles_per_run"):
+        bits.append(f"profiles per run: {c['max_profiles_per_run']}")
     if c.get("relocation_needed"):
         bits.append("must be open to relocating")
     return "; ".join(bits)

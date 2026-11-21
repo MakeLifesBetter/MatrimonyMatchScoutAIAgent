@@ -8,7 +8,7 @@ same extraction schema and is scored in the same report. Record the file name
 |---|---|
 | Biodata PDF / Word / text | Read the text; DOB → age; extract every schema field you can see. Scanned PDFs: read the page images with vision. |
 | Profile screenshot | Read only the visible TEXT with vision. Fields cut off or blurred are null. Never describe, judge or compare the photo or face. |
-| Chat export (e.g. WhatsApp .txt) | Find the two people, count messages, who started / wrote last, topics, open questions, red flags → `chat`. Match it to an existing profile by name if you can. Never copy the export. |
+| Chat export (e.g. WhatsApp .txt) | Find the two people, count messages, who started / wrote last, topics, open questions, red flags → `chat`. Match it to an existing profile by name if you can. Never copy the export. If you cannot tell which sender is the user, ask their name as it appears in the export and save it as `my_name` in their interests. |
 | Broker spreadsheet (CSV / Excel) | One row = one person. Map columns to fields; keep the row number; tell the user which columns you could not map. Never copy phone or email columns. |
 
 `scout.py --data-dir <D> read-files <folder>` does all of this except

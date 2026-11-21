@@ -14,6 +14,10 @@ scoring and reports deterministic. Never show the JSON to the user.
   scout.py --data-dir D judge FILE.json         ([{profile_id, qualitative, text}])
   scout.py --data-dir D report [--preview]      (top 3 + md + xlsx; marks shown)
   scout.py --data-dir D set-status ID interested|rejected|contacted|new
+  scout.py --data-dir D explain ID              (why a profile scores what it does)
+  scout.py --data-dir D seen URL_OR_ID ...      (already read? when? - pick "the next 5")
+  scout.py --data-dir D mark-unavailable ID     (deleted / hidden on the site)
+  scout.py --data-dir D forget ID               (delete that record)
   scout.py --data-dir D extract FILE.txt [--url URL]
   scout.py --data-dir D read-files FOLDER
   scout.py --data-dir D checkpoint save FILE.json | clear   ({phase, cursors, run_id})
@@ -72,7 +76,7 @@ def internal(store, args):
                "profiles_seen": len(store.load_profiles()), "shown": len(store.shown_log()),
                "scan_in_progress": st.get("progress"),
                "chat_checkpoint": store.load_checkpoint(),
-               "calibration": st.get("calibration"), "scores_stale": st.get("scores_stale"),
+               "scores_stale": st.get("scores_stale"),
                "recovered_files": store.recovered, "data_dir": str(store.dir)}
     elif cmd == "interests":
         c = store.criteria()
@@ -138,6 +142,30 @@ def internal(store, args):
     elif cmd == "set-status":
         store.set_user_status(rest[0], rest[1])
         out = {"profile_id": rest[0], "status": rest[1]}
+    elif cmd == "explain":
+        from score import score_profile
+        rec = store.load_profiles()[rest[0]]
+        j = store.load_judgements().get(rest[0])
+        if j and j.get("for_hash") == rec["hash"]:
+            res = score_profile(rec["data"], store.criteria(), j["qualitative"], j["text"])
+        else:
+            res = score_profile(rec["data"], store.criteria())
+        out = {"name": rec["data"].get("name"), "user_status": rec.get("user_status"), **res}
+    elif cmd == "seen":
+        profiles = store.load_profiles()
+        out = {}
+        for ref in rest:
+            hits = store.find(ref)
+            rec = profiles[hits[0]] if len(hits) == 1 else None
+            out[ref] = {"seen": bool(rec), "profile_id": rec and rec["profile_id"],
+                        "last_seen": rec and rec.get("last_seen"),
+                        "user_status": rec and rec.get("user_status"),
+                        "ambiguous": len(hits) > 1}
+    elif cmd == "mark-unavailable":
+        store.mark_unavailable(rest[0])
+        out = {"profile_id": rest[0], "available": False}
+    elif cmd == "forget":
+        out = {"profile_id": rest[0], "forgotten": store.forget_profile(rest[0])}
     elif cmd == "extract":
         url = rest[rest.index("--url") + 1] if "--url" in rest else None
         out = extract.extract_profile(Path(rest[0]).read_text(encoding="utf-8"), url=url)

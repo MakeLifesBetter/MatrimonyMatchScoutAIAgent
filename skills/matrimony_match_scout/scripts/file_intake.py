@@ -8,6 +8,7 @@ Put files in <data-dir>/files_to_read/ (or point at any folder) and say
   .docx             biodata Word file
   .csv .xlsx        broker spreadsheets - one row per person
   .json             records already in the extraction schema
+  page text files   saved page text whose first line is "URL: <address>"
 Images (.png/.jpg screenshots) are listed for Muse to read with vision. Nothing is guessed.
 Chat exports are reduced to a summary - the export itself is not copied.
 """
@@ -168,7 +169,7 @@ def read_folder(store, folder, criteria=None):
             if rec.pop("_unreadable", False):
                 out["skipped"].append((path.name, "I could not find a name or profile ID in it"))
                 continue
-            rec["source"], rec["source_detail"] = ("scan_capture" if url else "file"), path.name
+            rec["source"], rec["source_detail"] = ("page_capture" if url else "file"), path.name
             out["records"].append(rec)
         except Exception as exc:  # one bad file never stops the rest
             out["skipped"].append((path.name, f"could not be opened ({exc.__class__.__name__})"))

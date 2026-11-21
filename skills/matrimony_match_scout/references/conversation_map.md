@@ -12,7 +12,7 @@ never JSON, file paths or tool names unless they ask.
 | "just do a few", "quick one" | `scan-start` (default 5) |
 | "read 10 this time", "do 8" | `scan-start --cap N` (up to 10) |
 | "read 25", "do all my matches", "more than 10" | `scan-start --cap N --user-asked` (max 50) |
-| "read the next 5", "keep going" | Another run from the checkpoint/backlog, same rules |
+| "read the next 5", "keep going" | Another run, same rules; `seen` the links and read unseen profiles first |
 | "always do 20" | Save `max_profiles_per_run: 20`, then scan |
 | "give me the report", "show my matches", "excel sheet", "top 3" | `report` (explain if empty / nothing new) |
 | "how do you read my data?", "is my data safe?" | Own login in the browser, read-only, summaries only, one local folder |
@@ -22,10 +22,11 @@ never JSON, file paths or tool names unless they ask.
 | "what did you show me before" | `history` |
 | "pass on 2", "not interested in Divya" | `set-status <id> rejected` (Scout notes only — nothing sent) |
 | "interested in Asha", "I like the first one" | `set-status <id> interested` |
-| "why is 1 ranked first" | Explain points, judgement, risks from the report |
+| "why is 1 ranked first" | `explain <id>`: points, judgement, risks |
+| "forget Asha" | Confirm, then `forget <id>` |
 | "draft a reply to Asha" | Draft only; send only after they approve the exact text |
 | "read my files" + attachments | `read-files` / vision for screenshots, then `ingest` |
-| "show me a demo" | `demo` (fictional profiles) |
+| "show me a demo" | `demo` (fictional profiles) — show its `digest` |
 | "stop" | Save the checkpoint, say where it stopped, offer to carry on later |
 
 Rules:

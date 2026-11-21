@@ -72,6 +72,26 @@ class InternalActionTests(unittest.TestCase):
         act(d, "save-interests", str(d / "c.json"))
         self.assertEqual(act(d, "scan-start")["cap"], 15)
 
+    def test_explain_seen_unavailable_forget(self):
+        d = tmpdir()
+        (d / "c.json").write_text(json.dumps({"age_min": 25, "age_max": 30, "dealbreakers": ["smoking"]}))
+        act(d, "save-interests", str(d / "c.json"))
+        (d / "p.json").write_text(json.dumps([
+            person("E1", name="Esha Test", profile_url="https://x.invalid/profile/E1"),
+            person("E2", name="Old Test", age=40)]))
+        act(d, "ingest", str(d / "p.json"))
+        ex = act(d, "explain", "E1")
+        self.assertFalse(ex["excluded"])
+        self.assertIn("Age 27 is in your range", ex["why_fit"])
+        self.assertTrue(act(d, "explain", "E2")["excluded"])
+        seen = act(d, "seen", "https://x.invalid/profile/E1", "https://x.invalid/profile/NEW9")
+        self.assertTrue(seen["https://x.invalid/profile/E1"]["seen"])
+        self.assertFalse(seen["https://x.invalid/profile/NEW9"]["seen"])
+        act(d, "mark-unavailable", "E1")
+        self.assertEqual(act(d, "report")["status"], "all_excluded")  # E1 gone, E2 too old
+        self.assertTrue(act(d, "forget", "E2")["forgotten"])
+        self.assertEqual(act(d, "status")["profiles_seen"], 1)
+
     def test_chat_checkpoint_resume(self):
         d = tmpdir()
         (d / "cp.json").write_text(json.dumps({"phase": "SCAN", "run_id": "chat-1",

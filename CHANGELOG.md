@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.2 — 2026-11-20
+- Consistency pass: every action SKILL.md and the conversation map mention
+  now exists - new `explain`, `seen` (read unseen profiles first for "the
+  next 5"), `mark-unavailable` and `forget`; `demo` used for the demo
+- Removed terminal-era leftovers (scan queue in the store, captures folder,
+  calibration field in status, test helpers); `scan_capture` source renamed
+  `page_capture`
+- Muse-only release tooling: version now in `VERSION`; the Claude plugin
+  manifest and Claude zip are gone; build_release.py checks the README link
+  and badge match; PUBLISH.md rewritten
+- Run size shown in the interests read-back; data folder added to .gitignore
+- 60 tests
+
 ## 0.3.1 — 2026-11-20
 - Profiles per run: 5 by default, at most 10 per run; more only when the
   person asks (`scan-start --cap N --user-asked`, or a number they saved as

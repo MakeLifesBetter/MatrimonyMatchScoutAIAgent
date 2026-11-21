@@ -10,11 +10,12 @@ Everything the Scout knows lives in ONE user-owned data folder
   judgements.json         AI / rule-based judgement per profile (kept apart so
                           a new judgement never makes a profile look "changed")
   shared_log.jsonl        every profile ever SHOWN to you, with hash at that time
-  run_state.json          checkpoint: scan queue + cursor, calibration, flags
+  run_state.json          checkpoint (phase + cursor), scan progress and timing,
+                          interests snapshot, last report ranks, flags
   scout.lock              single-run lock (stale after 2 hours)
-  captures/<date>/        page text of matches / search / profile pages
-                          (chat pages are never saved - only short summaries)
   reports/<date>/         digest.txt, report.md, report.xlsx
+  files_to_read/          files the user drops in for "read my files"
+Chats are never stored - only short summaries inside each profile record.
 
 Rules baked in:
   - Atomic writes (tmp + fsync + rename) with a .bak of the previous copy.
@@ -303,6 +304,20 @@ class ScoutStore:
         return None
 
     # ---------- profiles / dedupe ----------
+    def find(self, ref):
+        """Profile IDs matching an ID, a profile URL, or the start of a name."""
+        ref = (ref or "").strip()
+        profiles = self.load_profiles()
+        if ref in profiles:
+            return [ref]
+        low = ref.lower().rstrip("/")
+        by_url = [pid for pid, r in profiles.items()
+                  if (r["data"].get("profile_url") or "").lower().rstrip("/") == low and low]
+        if by_url:
+            return by_url
+        return [pid for pid, r in profiles.items()
+                if low and (r["data"].get("name") or "").lower().startswith(low)]
+
     def load_profiles(self):
         return self._read_json(self.profiles_path, {})
 
@@ -412,28 +427,7 @@ class ScoutStore:
                 profiles[pid]["data_when_shown"] = deepcopy(profiles[pid]["data"])
         self._atomic_write_json(self.profiles_path, profiles)
 
-    # ---------- scan checkpoint (resume, never restart) ----------
-    def scan_state(self):
-        return self.state().get("scan")
-
-    def start_scan(self, site, cap, run_id=None):
-        scan = {"run_id": run_id or datetime.now().strftime("run-%Y%m%d-%H%M%S"),
-                "site": site, "cap": cap, "queue": [], "done": [], "read": 0,
-                "phase": "DISCOVER", "started_at": now_iso(), "checkpoint_at": now_iso()}
-        self.update_state(scan=scan)
-        return scan
-
-    def save_scan(self, scan):
-        scan["checkpoint_at"] = now_iso()
-        self.update_state(scan=scan)
-
-    def finish_scan(self, summary):
-        st = self.state()
-        st.pop("scan", None)
-        st["last_scan"] = dict(summary, finished_at=now_iso())
-        self._atomic_write_json(self.state_path, st)
-
-    # Legacy simple checkpoint API (kept for older callers / the AI layer)
+    # ---------- checkpoint (resume, never restart) ----------
     def save_checkpoint(self, phase, cursors=None, run_id=None):
         self.update_state(phase=phase, cursors=cursors or {}, run_id=run_id,
                           checkpoint_at=now_iso())
